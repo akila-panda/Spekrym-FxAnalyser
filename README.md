@@ -1,0 +1,1 @@
+# Spekrym-FX Analyser
