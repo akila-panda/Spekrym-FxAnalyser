@@ -1,0 +1,51 @@
+{
+  "pair": "EUR_USD",
+  "timeframe": "H1",
+  "horizon": 1,
+  "n_folds": 5,
+  "folds": [
+    {
+      "fold": 0,
+      "train_rows": 7472,
+      "test_rows": 1494,
+      "model_accuracy": 0.429,
+      "naive_baseline_accuracy": 0.3869,
+      "edge": 0.0422
+    },
+    {
+      "fold": 1,
+      "train_rows": 8966,
+      "test_rows": 1494,
+      "model_accuracy": 0.4177,
+      "naive_baseline_accuracy": 0.3722,
+      "edge": 0.0455
+    },
+    {
+      "fold": 2,
+      "train_rows": 10460,
+      "test_rows": 1494,
+      "model_accuracy": 0.407,
+      "naive_baseline_accuracy": 0.3708,
+      "edge": 0.0361
+    },
+    {
+      "fold": 3,
+      "train_rows": 11954,
+      "test_rows": 1494,
+      "model_accuracy": 0.4217,
+      "naive_baseline_accuracy": 0.3922,
+      "edge": 0.0295
+    },
+    {
+      "fold": 4,
+      "train_rows": 13448,
+      "test_rows": 1494,
+      "model_accuracy": 0.4304,
+      "naive_baseline_accuracy": 0.3815,
+      "edge": 0.0489
+    }
+  ],
+  "mean_model_accuracy": 0.4212,
+  "mean_baseline_accuracy": 0.3807,
+  "mean_edge": 0.0404
+}

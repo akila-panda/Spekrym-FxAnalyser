@@ -1,0 +1,36 @@
+{
+  "pair": "EUR_USD",
+  "timeframe": "H1",
+  "horizon": 1,
+  "feature_columns": [
+    "ret_1",
+    "ret_3",
+    "ret_6",
+    "ret_12",
+    "ret_24",
+    "rsi14",
+    "macd_hist_norm",
+    "atr14_norm",
+    "atr_regime",
+    "bb_pct",
+    "bb_width_norm",
+    "sma20_slope",
+    "sma50_slope",
+    "ema20_dist_norm",
+    "vol_zscore",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos"
+  ],
+  "trained_at": "2026-09-23T05:47:49.206891+00:00",
+  "train_rows": 11955,
+  "holdout_metrics": {
+    "holdout_rows": 2989,
+    "naive_baseline_accuracy": 0.3871,
+    "model_accuracy": 0.4122,
+    "edge_over_baseline": 0.0251,
+    "log_loss": 1.066
+  },
+  "model_file": "EUR_USD_H1_h1_20260923T054749Z.joblib"
+}

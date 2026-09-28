@@ -1,0 +1,16 @@
+python-dotenv
+psycopg2-binary
+sqlalchemy
+asyncpg
+fastapi
+uvicorn[standard]
+ta
+swarms
+httpx
+tenacity
+apscheduler
+pandas
+numpy
+pytest
+scikit-learn
+joblib

@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    container_name: spekrym-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: spekrym
+      POSTGRES_PASSWORD: spekrym_dev_pw
+      POSTGRES_DB: spekrym_fx
+    ports:
+      # host 5433 -> container 5432, to avoid colliding with a local
+      # (Homebrew) PostgreSQL already bound to host 5432
+      - "5433:5432"
+    volumes:
+      - spekrym_pgdata:/var/lib/postgresql/data
+
+volumes:
+  spekrym_pgdata:
