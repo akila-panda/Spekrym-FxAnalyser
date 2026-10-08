@@ -1,0 +1,37 @@
+.class-filter {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.class-filter button {
+  flex: 1;
+  padding: 3px 4px;
+  font-size: 11px;
+  background: var(--panel, #1a1a1a);
+  color: var(--muted, #888);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.class-filter button[aria-pressed="true"] {
+  color: var(--text, #eee);
+  border-color: var(--accent, #4ea1ff);
+  background: color-mix(in srgb, var(--accent, #4ea1ff) 18%, transparent);
+}
+.indicator-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.chip-pill {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--panel, #1a1a1a);
+  border: 1px solid var(--border, #2a2a2a);
+  color: var(--muted, #aaa);
+}

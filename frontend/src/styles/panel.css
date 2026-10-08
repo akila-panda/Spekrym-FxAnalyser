@@ -1,0 +1,132 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg);
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--header-h);
+  flex: none;
+  padding: 0 8px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--grid);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.legend-slot {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.legend {
+  display: inline-flex;
+  gap: 10px;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.chg-up { color: var(--up); }
+.chg-down { color: var(--down); }
+.panel-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.chart-host,
+.chart-el {
+  position: absolute;
+  inset: 0;
+}
+.panel-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.panel-overlay button {
+  pointer-events: auto;
+}
+.panel[data-focused="true"] .panel-header {
+  border-bottom-color: var(--accent);
+}
+.icon-btn {
+  padding: 0 6px;
+  border-color: transparent;
+}
+.dev-demo-btn {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 2;
+  font-size: 11px;
+  background: var(--panel);
+}
+.dev-demo-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+/* ---- scan states ---- */
+.panel-header { position: relative; }
+.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.primary:disabled {
+  border-color: var(--grid);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.panel-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+}
+.panel-note {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 2;
+  max-width: calc(100% - 16px);
+  margin: 0;
+  padding: 2px 6px;
+  background: var(--panel);
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--muted);
+}
+.panel-note[data-kind="error"] { color: var(--text); }
+.panel-hatch {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(135deg, transparent 0 6px, var(--grid) 6px 7px);
+  opacity: 0.6;
+}

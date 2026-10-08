@@ -58,11 +58,54 @@ async def _store_candles(pair: str, candles: list[dict], tf: str = "H1"):
     logger.info("stored %d %s candles for %s", len(rows), tf, pair)
 
 
+# --- bid/ask (MBA) ingestion path for scalping (Phase A) ---
+UPSERT_BA_SQL = text(
+    """
+    INSERT INTO candles (pair, tf, ts, o, h, l, c, v, complete,
+                         bid_o, bid_h, bid_l, bid_c, ask_o, ask_h, ask_l, ask_c)
+    VALUES (:pair, :tf, :ts, :o, :h, :l, :c, :v, :complete,
+            :bid_o, :bid_h, :bid_l, :bid_c, :ask_o, :ask_h, :ask_l, :ask_c)
+    ON CONFLICT (pair, tf, ts) DO UPDATE SET
+        o=EXCLUDED.o, h=EXCLUDED.h, l=EXCLUDED.l, c=EXCLUDED.c,
+        v=EXCLUDED.v, complete=EXCLUDED.complete,
+        bid_o=EXCLUDED.bid_o, bid_h=EXCLUDED.bid_h, bid_l=EXCLUDED.bid_l, bid_c=EXCLUDED.bid_c,
+        ask_o=EXCLUDED.ask_o, ask_h=EXCLUDED.ask_h, ask_l=EXCLUDED.ask_l, ask_c=EXCLUDED.ask_c
+    """
+)
+
+
+def _to_row_mba(pair: str, candle: dict, tf: str = "H1") -> dict:
+    """Row from an OANDA price='MBA' candle (mid + bid + ask). Mid stays in o/h/l/c."""
+    b, a = candle["bid"], candle["ask"]
+    m = candle.get("mid")
+    if m is None:  # if only BA requested, derive mid = (bid+ask)/2
+        m = {k: (float(b[k]) + float(a[k])) / 2 for k in ("o", "h", "l", "c")}
+    return {
+        "pair": pair, "tf": tf,
+        "ts": datetime.fromisoformat(candle["time"].replace("Z", "+00:00")),
+        "o": float(m["o"]), "h": float(m["h"]), "l": float(m["l"]), "c": float(m["c"]),
+        "v": int(candle["volume"]), "complete": bool(candle["complete"]),
+        "bid_o": float(b["o"]), "bid_h": float(b["h"]), "bid_l": float(b["l"]), "bid_c": float(b["c"]),
+        "ask_o": float(a["o"]), "ask_h": float(a["h"]), "ask_l": float(a["l"]), "ask_c": float(a["c"]),
+    }
+
+
+async def _store_mba(pair: str, candles: list[dict], tf: str = "H1"):
+    if not candles:
+        return
+    rows = [_to_row_mba(pair, c, tf) for c in candles]
+    async with get_session() as session:
+        await session.execute(UPSERT_BA_SQL, rows)
+        await session.commit()
+    logger.info("stored %d %s MBA candles for %s", len(rows), tf, pair)
+
+
 async def backfill_pair(client: OandaClient, pair: str, tf: str = "H1",
-                        years: int = BACKFILL_YEARS):
+                        years: int = BACKFILL_YEARS, bidask: bool = False):
     """Paginate backward in MAX_CANDLES_PER_REQUEST chunks to cover `years` of
-    `tf` candles."""
+    `tf` candles. `bidask=True` fetches mid+bid+ask (price='MBA') for scalping."""
     step = _TF_STEP.get(tf, timedelta(hours=1))
+    price = "MBA" if bidask else "M"
     to_time = datetime.now(timezone.utc)
     since = to_time - timedelta(days=365 * years)
     cursor = to_time
@@ -70,7 +113,7 @@ async def backfill_pair(client: OandaClient, pair: str, tf: str = "H1",
     while cursor > since:
         try:
             candles = await client.get_candles(
-                pair, granularity=tf, count=MAX_CANDLES_PER_REQUEST,
+                pair, granularity=tf, count=MAX_CANDLES_PER_REQUEST, price=price,
                 to_time=cursor.strftime("%Y-%m-%dT%H:%M:%S.000000000Z"),
             )
         except CircuitOpenError:
@@ -80,7 +123,10 @@ async def backfill_pair(client: OandaClient, pair: str, tf: str = "H1",
         if not candles:
             break
 
-        await _store_candles(pair, candles, tf)
+        if bidask:
+            await _store_mba(pair, candles, tf)
+        else:
+            await _store_candles(pair, candles, tf)
         earliest = datetime.fromisoformat(candles[0]["time"].replace("Z", "+00:00"))
         if earliest >= cursor:
             break

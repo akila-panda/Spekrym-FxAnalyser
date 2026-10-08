@@ -27,7 +27,9 @@ async def load_candles(pair: str, timeframe: str = "H1", limit: int = 500) -> pd
         result = await session.execute(
             text(
                 """
-                SELECT ts, o, h, l, c, v FROM candles
+                SELECT ts, o, h, l, c, v,
+                       bid_o, bid_h, bid_l, bid_c, ask_o, ask_h, ask_l, ask_c
+                FROM candles
                 WHERE pair = :pair AND tf = :tf AND complete = TRUE
                 ORDER BY ts DESC LIMIT :lim
                 """
@@ -36,10 +38,12 @@ async def load_candles(pair: str, timeframe: str = "H1", limit: int = 500) -> pd
         )
         rows = result.fetchall()
 
+    _cols = ["ts", "o", "h", "l", "c", "v",
+             "bid_o", "bid_h", "bid_l", "bid_c", "ask_o", "ask_h", "ask_l", "ask_c"]
     if not rows:
-        return pd.DataFrame(columns=["ts", "o", "h", "l", "c", "v"])
+        return pd.DataFrame(columns=_cols)
 
-    df = pd.DataFrame(rows, columns=["ts", "o", "h", "l", "c", "v"]).iloc[::-1].reset_index(drop=True)
+    df = pd.DataFrame(rows, columns=_cols).iloc[::-1].reset_index(drop=True)
     df["ts"] = pd.to_datetime(df["ts"], utc=True)
     df = df.set_index("ts")
 

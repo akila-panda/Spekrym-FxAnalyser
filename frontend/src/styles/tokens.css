@@ -1,0 +1,64 @@
+/* Survey Sheet+ tokens (DESIGN_DIRECTION.md section 10). */
+:root {
+  /* base */
+  --bg: #0c1420;
+  --panel: #111b29;
+  --grid: #1a2738;
+  --text: #d3dce8;
+  --muted: #8a9aaf;
+  --accent: #d8bc7a; /* focus, selection, primary Scan only */
+  --up: #2fb88a;
+  --down: #e0575f;
+
+  /* annotation roles
+     alphas applied in the renderer: window 6%, range 10%, fvg 14%,
+     order block 18%, premium/discount 5%, trade boxes 10% */
+  --role-bias: #c3a6ff;
+  --role-range: #8aa4ff;
+  --role-window: #7f93ad;
+  --role-liquidity: #4fd0e0;
+  --role-sweep: #ff9f4a;
+  --role-structure: #eef3f9;
+  --role-fvg-bull: #38c493;
+  --role-fvg-bear: #ea6a72;
+  --role-order-block: #d17ae6;
+  --role-premium: #e8a0a0;
+  --role-discount: #7fd1b9;
+  --role-entry: #f4f7fb;
+  --role-stop: #f0707a;
+  --role-target: #4dd6a0;
+  --role-filter: #f2d16b;
+  --role-context: #6e809a;
+
+  --focus-ring: #d8bc7a;
+  --row-h: 24px;
+  --rail-left: 260px;
+  --rail-right: 300px;
+  --rail-collapsed: 36px;
+  --header-h: 28px;
+}
+
+:root[data-density="comfortable"] {
+  --row-h: 28px;
+}
+
+/* colour-blind mode: Okabe-Ito blue/orange.
+   Always draw up candles hollow and down candles filled. */
+:root[data-cb="true"] {
+  --up: #56b4e9;
+  --down: #e69f00;
+  --role-fvg-bull: #56b4e9;
+  --role-fvg-bear: #e69f00;
+  --role-target: #56b4e9;
+  --role-stop: #e69f00;
+  --role-liquidity: #e8e1c4;
+  --role-sweep: #ff6fa8;
+  --role-filter: #e39bc4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

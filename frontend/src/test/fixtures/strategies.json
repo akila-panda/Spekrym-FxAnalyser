@@ -1,0 +1,154 @@
+[
+ {
+  "id": "orb",
+  "name": "Opening range breakout",
+  "description": "Break of the first N minutes after a session open, stop at the range width.",
+  "supported_timeframes": [
+   "M1",
+   "M5",
+   "M15"
+  ],
+  "context_timeframes": [
+   "H1",
+   "H4"
+  ],
+  "display_tz": "UTC",
+  "params": [
+   {
+    "key": "session_open",
+    "label": "Session open (UTC)",
+    "type": "time",
+    "default": "07:00",
+    "min": null,
+    "max": null,
+    "step": null,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "session_len_min",
+    "label": "Session length (min)",
+    "type": "integer",
+    "default": 540,
+    "min": 60.0,
+    "max": 720.0,
+    "step": 30.0,
+    "options": null,
+    "help": "Positions are flat at session end."
+   },
+   {
+    "key": "mode",
+    "label": "Mode",
+    "type": "select",
+    "default": "breakout",
+    "min": null,
+    "max": null,
+    "step": null,
+    "options": [
+     "breakout",
+     "fade"
+    ],
+    "help": null
+   },
+   {
+    "key": "range_min",
+    "label": "Range length (min)",
+    "type": "integer",
+    "default": 15,
+    "min": 5.0,
+    "max": 120.0,
+    "step": 5.0,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "entry_window_min",
+    "label": "Entry window (min)",
+    "type": "integer",
+    "default": 180,
+    "min": 15.0,
+    "max": 480.0,
+    "step": 15.0,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "target_mult",
+    "label": "Target (x range)",
+    "type": "number",
+    "default": 1.5,
+    "min": 0.5,
+    "max": 5.0,
+    "step": 0.1,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "min_stop_pips",
+    "label": "Min range (pips)",
+    "type": "number",
+    "default": 6.0,
+    "min": 1.0,
+    "max": 100.0,
+    "step": 0.5,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "max_stop_pips",
+    "label": "Max range (pips)",
+    "type": "number",
+    "default": 40.0,
+    "min": 5.0,
+    "max": 200.0,
+    "step": 1.0,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "use_vwap",
+    "label": "VWAP filter",
+    "type": "boolean",
+    "default": false,
+    "min": null,
+    "max": null,
+    "step": null,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "use_volume",
+    "label": "Volume filter",
+    "type": "boolean",
+    "default": false,
+    "min": null,
+    "max": null,
+    "step": null,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "vol_mult",
+    "label": "Volume multiple",
+    "type": "number",
+    "default": 1.5,
+    "min": 1.0,
+    "max": 5.0,
+    "step": 0.1,
+    "options": null,
+    "help": null
+   },
+   {
+    "key": "vol_lookback",
+    "label": "Volume lookback (bars)",
+    "type": "integer",
+    "default": 20,
+    "min": 5.0,
+    "max": 100.0,
+    "step": 1.0,
+    "options": null,
+    "help": null
+   }
+  ]
+ }
+]
