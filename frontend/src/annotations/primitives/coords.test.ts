@@ -62,6 +62,12 @@ describe("makeCoordinates", () => {
     expect(c.timeX(T0 + 3 * H1 + 2 * H1)).toBe(55);
     expect(c.priceY(40)).toBe(60);
   });
+  it("interpolates intrabar and forward times when the chart rejects fractional indexes", () => {
+    const integerOnly = { logicalToCoordinate: (l: number) => Number.isInteger(l) ? l * 10 + 5 : 0 };
+    const c = makeCoordinates(integerOnly as never, series, () => bars, H1);
+    expect(c.timeX(T0 + H1 * 1.25)).toBe(17.5);
+    expect(c.timeX(T0 + H1 * 5.5)).toBe(60);
+  });
   it("is null with no bars", () => {
     expect(makeCoordinates(ts as never, series, () => [], H1).timeX(1)).toBeNull();
   });

@@ -68,6 +68,7 @@ export const BoundsResponseSchema = z.object({
   pair: PairSchema,
   bounds: z.object({
     M1: BoundSchema, M5: BoundSchema, M15: BoundSchema, H1: BoundSchema, H4: BoundSchema,
+    D: BoundSchema.optional(), W: BoundSchema.optional(),
   }),
 });
 

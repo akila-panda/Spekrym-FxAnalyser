@@ -1,0 +1,19 @@
+/* DESK DK18 — replay + evidence timeline. Tokens only; no new colours. */
+.dk-replay, .dk-timeline { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.dk-replay-bar { display: flex; gap: 4px; flex-wrap: wrap; }
+.dk-replay button, .dk-timeline > button, .dk-asof button {
+  padding: 3px 8px; font-size: 12px; cursor: pointer; min-height: 32px;
+  background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px;
+}
+.dk-replay button:disabled, .dk-timeline > button:disabled { color: var(--muted); cursor: not-allowed; }
+.dk-replay button[aria-pressed="true"], .dk-timeline > button[aria-pressed="true"] { border-color: var(--accent); }
+.dk-replay-row { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.dk-replay-row input[type="range"] { flex: 1; min-width: 0; }
+.dk-replay-row select { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; padding: 2px 4px; }
+.dk-timeline-list { list-style: none; margin: 0; padding: 0; overflow: auto; max-height: 220px; }
+.dk-timeline-list li { border-bottom: 1px solid var(--border); }
+.dk-timeline-list time { font-variant-numeric: tabular-nums; color: var(--muted); margin-right: 8px; }
+.dk-asof {
+  display: flex; align-items: center; gap: 8px; padding: 2px 8px; font-size: 11px;
+  border-bottom: 1px solid var(--accent); color: var(--text);
+}

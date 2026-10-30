@@ -46,6 +46,20 @@ describe("exportScan", () => {
     expect(row).toBe("b2,rejected,,2025-05-02,2023-11-15T01:00:00.000Z,2023-11-15T02:00:00.000Z,,,,,,");
   });
 
+  it("appends review and note columns only when a review lookup is given", () => {
+    const rv = (id: string) => (id === "a,1" ? { mark: "wrong", note: 'says "late", then =cmd' } : undefined);
+    const lines = toCsv(result, rv).split("\n");
+    expect(lines[0]!.endsWith(",bars_held,review,note")).toBe(true);
+    expect(lines[1]).toContain(',wrong,"says ""late"", then =cmd"');
+    expect(lines[2]!.endsWith(",,,,,,,,")).toBe(true);
+    expect(toCsv(result).split("\n")[0]).not.toContain("review");
+  });
+
+  it("neutralises formula-looking notes", () => {
+    const row = toCsv(result, () => ({ note: "=1+1" })).split("\n")[1]!;
+    expect(row.endsWith(",'=1+1")).toBe(true);
+  });
+
   it("round-trips through JSON", () => {
     expect(JSON.parse(toJson(result)).setups).toHaveLength(2);
   });

@@ -1,0 +1,22 @@
+/* F14 — Validation ledger board. Tokens only; prefix va-. Tier = glyph + text + border shape. */
+.va-root { display: flex; flex-direction: column; height: 100%; min-height: 0; padding: 8px; gap: 8px; background: var(--bg); color: var(--text); }
+.va-head, .va-summary { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; font-size: 12px; }
+.va-summary { padding: 6px 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; }
+.va-tiers { display: inline-flex; gap: 2px; flex-wrap: wrap; }
+.va-tiers button { padding: 3px 8px; min-height: 32px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 3px; }
+.va-tiers button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.va-body { display: flex; gap: 8px; flex: 1; min-height: 0; }
+.va-list { list-style: none; margin: 0; padding: 0; flex: 1 1 55%; overflow: auto; display: flex; flex-direction: column; gap: 2px; }
+.va-row { width: 100%; display: flex; gap: 8px; align-items: center; min-height: 32px; padding: 3px 8px; font-size: 12px; text-align: left; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.va-row[aria-current="true"] { border-color: var(--accent); }
+.va-row[data-tier="exploratory"] { border-style: dotted; }
+.va-row[data-tier="in_sample"] { border-style: dashed; }
+.va-row[data-tier="validated"] { border-style: solid; }
+.va-row[data-tier="vault_confirmed"] { border: 3px double var(--accent); }
+.va-muted { color: var(--muted); }
+.va-detail { flex: 1 1 45%; overflow: auto; padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; }
+.va-detail h4 { margin: 0 0 4px; }
+.va-dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0; }
+.va-dl dt { color: var(--muted); }
+.va-dl dd { margin: 0; }
+.va-warn { color: var(--warn); margin: 4px 0; }

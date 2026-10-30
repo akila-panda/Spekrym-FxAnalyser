@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+import { Icon } from "@/components/ui/Icon";
 import type { Timeframe } from "@/types/market";
+import { PopoutButton } from "@/window/PopoutButton";
 
 export type ChipState = "idle" | "scanning" | "done" | "stale" | "unsupported" | "error";
 
@@ -41,15 +43,18 @@ interface Props {
   /** When true, this chart shows only its own annotations (higher-timeframe context hidden). */
   localOnly?: boolean;
   onToggleLocalOnly?: () => void;
+  /** DX4: Context / Focus / Detail relative to the selected setup (stack only). */
+  caption?: string | null;
 }
 
 export function PanelHeader({
   tf, state = "idle", chipText, legend, maximized = false, onToggleMaximize, onScan, scanDisabledReason,
-  localOnly = false, onToggleLocalOnly,
+  localOnly = false, onToggleLocalOnly, caption,
 }: Props) {
   return (
     <header className="panel-header" onDoubleClick={onToggleMaximize}>
       <strong className="tf-label">{tf}</strong>
+      {caption && <span className="row-caption">{caption}</span>}
       <span className="chip mono">
         <ChipShape state={state} />
         {chipText ?? state}
@@ -64,7 +69,7 @@ export function PanelHeader({
           aria-label={`${localOnly ? "Show" : "Hide"} higher-timeframe context on ${tf}`}
           title={localOnly ? "Local only — higher-timeframe context hidden" : "Context flows down — showing higher-timeframe annotations"}
         >
-          {localOnly ? "⬒" : "⬓"}
+          <Icon name={localOnly ? "layers-off" : "layers"} />
         </button>
       )}
       <button
@@ -78,6 +83,7 @@ export function PanelHeader({
         Scan
       </button>
       {state === "scanning" && <span className="panel-progress" role="progressbar" aria-label={`Scanning ${tf}`} />}
+      <PopoutButton role={{ kind: "chart", tf }} label={`${tf} chart`} />
       {onToggleMaximize && (
         <button
           type="button"
@@ -86,7 +92,7 @@ export function PanelHeader({
           aria-label={`${maximized ? "Restore" : "Maximize"} ${tf}`}
           title={maximized ? "Restore (Esc)" : "Maximize (M)"}
         >
-          {maximized ? "⤡" : "⤢"}
+          <Icon name={maximized ? "restore" : "maximize"} />
         </button>
       )}
     </header>

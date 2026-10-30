@@ -1,0 +1,52 @@
+/* DEMO (removable) — demo surface styles. Tokens only; no new colours. Delete with src/desk/demo/. */
+.demo-root { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.demo-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.demo-sub { font-variant-numeric: tabular-nums; color: var(--muted); }
+.demo-note { font-size: 11px; color: var(--muted); }
+.demo-note code { font-size: 11px; }
+
+.demo-body { display: flex; flex: 1; min-height: 0; gap: 1px; }
+.demo-chart { flex: 1 1 72%; min-width: 0; background: var(--panel); }
+.demo-rail { flex: 0 0 300px; display: flex; flex-direction: column; gap: 1px; overflow: auto; background: var(--bg); }
+
+.demo-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin: 1px; padding: 8px; }
+.demo-panel h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.demo-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.demo-overlay { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 8px; font-size: 12px; color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.demo-muted { color: var(--muted); font-size: 11px; }
+.demo-link { display: block; padding: 4px 8px; font-size: 12px; color: var(--text); text-decoration: none; border: 1px solid var(--border); border-radius: 3px; }
+.demo-link:hover { border-color: var(--accent); }
+
+/* DEMO (removable) — fill the DESK / Canvas stage with the chart. */
+.demo-stage-fill { position: absolute; inset: 0; }
+.demo-canvas-fill { position: relative; width: 100%; height: 100%; min-height: 320px; }
+
+/* DEMO (removable) — floating on/off toggle. */
+.demo-toggle {
+  position: fixed; right: 12px; bottom: 12px; z-index: 50;
+  padding: 4px 10px; font-size: 12px; cursor: pointer;
+  background: var(--panel); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px; box-shadow: var(--shadow-pop);
+}
+.demo-toggle[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+
+/* Chart-backed Prepare and intelligence walkthrough. */
+.demo-prepare-chart, .demo-intelligence { width: 100%; min-width: 0; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); overflow: hidden; }
+.demo-chart-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.demo-chart-toolbar button, .demo-chart-toolbar a { color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 4px; padding: 5px 8px; cursor: pointer; }
+.demo-chart-toolbar button[aria-pressed="true"] { border-color: var(--accent); }
+.demo-chart-toolbar label { display: inline-flex; align-items: center; gap: 4px; }
+.demo-prepare-plot, .demo-intelligence-plot { position: relative; height: clamp(360px, 48vh, 620px); min-width: 0; }
+.demo-candidate-strip { gap: 4px; }
+.demo-prepare-chart > p, .demo-intelligence > p { padding: 0 10px; font-size: 11px; color: var(--muted); }
+.demo-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; padding: 8px; max-height: 210px; overflow: auto; }
+.demo-feature-grid button { display: flex; flex-direction: column; gap: 4px; padding: 8px; text-align: left; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 5px; cursor: pointer; }
+.demo-feature-grid button span, .demo-feature-grid button small { color: var(--muted); font-size: 11px; }
+.demo-feature-grid button[aria-pressed="true"] { border-color: var(--accent); }
+.demo-feature-grid button[data-p0="true"] { border-style: dashed; border-color: var(--warn); }
+.vc-root[data-demo="true"] .vc-stage { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; overflow: auto; gap: 10px; }
+.vc-root[data-demo="true"] .demo-intelligence { flex-shrink: 0; }
+.vc-root[data-demo="true"] .vc-monitor, .vc-root[data-demo="true"] .vc-review, .vc-root[data-demo="true"] .vc-scn, .vc-root[data-demo="true"] .vc-explore { max-width: none; }
+.vc-root[data-demo="true"] .vc-timeline { max-height: 130px; overflow: auto; flex-shrink: 0; }
+@media (max-width: 900px) { .vc-root[data-demo="true"] .vc-body { flex-direction: column; overflow: auto; } .vc-root[data-demo="true"] .vc-stage { overflow: visible; } .vc-root[data-demo="true"] .vc-rail { flex-basis: auto; overflow: visible; } }
+.dk-prepare > .demo-prepare-chart { flex-shrink: 0; }

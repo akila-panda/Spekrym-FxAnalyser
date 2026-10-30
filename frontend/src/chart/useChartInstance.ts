@@ -1,5 +1,6 @@
 import { CandlestickSeries, createChart, type IChartApi, type ISeriesApi } from "lightweight-charts";
 import { useEffect, useRef, useState } from "react";
+import { useSettingsStore } from "@/components/ui/settingsStore";
 import type { Pair } from "@/types/market";
 import { candleOptions, chartOptions, readTokens, timeAxisOptions } from "./theme";
 
@@ -14,6 +15,7 @@ export function useChartInstance(pair: Pair, tz: string) {
   const [handle, setHandle] = useState<ChartHandle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const initial = useRef({ pair, tz });
+  const themeEpoch = useSettingsStore((s) => s.epoch);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -41,6 +43,15 @@ export function useChartInstance(pair: Pair, tz: string) {
   useEffect(() => {
     if (handle) handle.chart.applyOptions(timeAxisOptions(tz));
   }, [handle, tz]);
+
+  // Theme change: re-read the tokens and recolour (colours only; layout and formatters are untouched).
+  useEffect(() => {
+    if (!handle) return;
+    const t = readTokens();
+    const o = chartOptions(t);
+    handle.chart.applyOptions({ layout: o.layout, grid: o.grid, rightPriceScale: o.rightPriceScale, crosshair: o.crosshair, timeScale: { borderColor: t.grid } });
+    handle.series.applyOptions(candleOptions(t, pair));
+  }, [handle, themeEpoch, pair]);
 
   return { containerRef, handle, error };
 }

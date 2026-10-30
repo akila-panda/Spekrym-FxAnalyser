@@ -1,0 +1,24 @@
+/* DK16 — Trade plan & journal (tokens only; shape + text carry meaning) */
+.dk-plan, .dk-journal { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 12px; }
+.dk-plan p, .dk-journal p { margin: 0; }
+.dk-plan textarea { width: 100%; min-height: 44px; resize: vertical; font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 3px; padding: 4px 6px; }
+.dk-plan fieldset { border: 1px solid var(--border); border-radius: 3px; margin: 0; padding: 4px 8px; }
+.dk-plan legend { font-size: 11px; color: var(--muted); }
+.dk-plan ul, .dk-journal ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.dk-jr-row { border: 1px solid var(--border); border-radius: 3px; padding: 4px 8px; display: flex; flex-direction: column; gap: 4px; }
+.dk-jr-filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.dk-jr-filters select, .dk-jr-filters input, .dk-plan select, .dk-plan input[type="text"], .dk-plan input[type="number"], .dk-jr-row select, .dk-jr-row input[type="text"], .dk-jr-row input[type="number"] { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 3px; padding: 2px 4px; min-height: 28px; }
+.dk-plan pre, .dk-jr-row pre { margin: 0; white-space: pre-wrap; font-family: monospace; font-size: 11px; }
+
+/* DK17 — methodology editor */
+.dk-mp { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 12px; }
+.dk-mp p { margin: 0; }
+.dk-mp h4 { margin: 0 0 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.dk-mp ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.dk-mp-group { border: 1px solid var(--border); border-radius: 3px; padding: 2px 8px; }
+.dk-mp-group summary { cursor: pointer; min-height: 28px; display: flex; align-items: center; }
+.dk-mp-row { display: grid; grid-template-columns: minmax(120px, 1fr) 90px auto auto; gap: 6px; align-items: center; }
+.dk-mp-row[data-changed="true"] label { font-weight: 600; }
+.dk-mp-row input[type="number"], .dk-mp-row select, .dk-mp .dk-field input { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 3px; padding: 2px 4px; min-height: 28px; }
+.dk-mp-row input[aria-invalid="true"] { border-color: var(--warn); border-style: dashed; }
+.dk-mp-err { grid-column: 1 / -1; color: var(--warn); }

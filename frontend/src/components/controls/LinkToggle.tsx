@@ -1,6 +1,6 @@
 import { useViewStore } from "@/store/viewStore";
 
-/** Links the five charts: when on, selecting a setup moves and zooms every chart to it. */
+/** Links the charts: when on, selecting a setup moves and zooms every chart to it. */
 export function LinkToggle() {
   const linked = useViewStore((s) => s.linked);
   const toggleLinked = useViewStore((s) => s.toggleLinked);
@@ -12,7 +12,7 @@ export function LinkToggle() {
         onClick={toggleLinked}
         title={linked ? "Charts follow the selected setup (click to unlink)" : "Charts stay put (click to link)"}
       >
-        {linked ? "🔗 Linked" : "⛓️‍💥 Unlinked"}
+        {linked ? "Linked" : "Unlinked"}
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import { useViewStore } from "@/store/viewStore";
 import { useScanStore } from "@/scan/scanStore";
 import { SummaryStrip } from "@/components/layout/SummaryStrip";
 import { RightRail } from "@/components/layout/RightRail";
+import { useRailStore } from "@/components/layout/railStore";
 import { useSetupNavigation } from "@/hooks/useSetupNavigation";
 import { rejectedSetup, scanOf, validSetup } from "@/test/scanFixtures";
 
@@ -19,8 +20,10 @@ function Harness() {
 }
 
 const st = () => useScanStore.getState();
+const openFilters = (user: ReturnType<typeof userEvent.setup>) => user.click(screen.getByRole("button", { name: /^Filters/ }));
 const seed = () =>
   act(() => {
+    useRailStore.getState().reset();
     st().reset();
     useAnnotationStore.getState().setSetup(null);
     useViewStore.setState({ asOf: null });
@@ -55,6 +58,8 @@ describe("setup browser", () => {
     expect(st().active).toEqual({ tf: "M5", id: "a" });
     expect(useAnnotationStore.getState().annotations.length).toBeGreaterThan(0);
     expect(screen.getByRole("region", { name: "Setup detail" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Why it qualified" })).toHaveAttribute("aria-expanded", "true");
+    await user.click(screen.getByRole("button", { name: "Conditions" }));
     expect(screen.getByRole("list", { name: "Conditions" })).toBeInTheDocument();
   });
 
@@ -93,6 +98,7 @@ describe("setup browser", () => {
   it("does not steal keys while typing in a field", async () => {
     const user = userEvent.setup();
     render(<Harness />);
+    await openFilters(user);
     const from = screen.getByLabelText("From");
     await user.click(from);
     await user.keyboard("j");
@@ -102,11 +108,14 @@ describe("setup browser", () => {
   it("toggling rejected candidates adds them, and a failed condition is readable", async () => {
     const user = userEvent.setup();
     render(<Harness />);
+    await openFilters(user);
     await user.click(screen.getByRole("checkbox", { name: /Show rejected candidates/ }));
     const rows = within(screen.getByRole("list", { name: "Setups" })).getAllByRole("button");
     expect(rows).toHaveLength(4);
     const rejected = rows.find((r) => /rejected/.test(r.textContent ?? ""))!;
     await user.click(rejected);
+    expect(screen.getByRole("button", { name: "Why it was rejected" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Conditions" }));
     const list = within(screen.getByRole("list", { name: "Conditions" }));
     expect(list.getAllByRole("listitem").length).toBeGreaterThan(0);
     expect(screen.getByRole("list", { name: "Conditions" }).textContent).toMatch(/failed|passed|not applicable/);
@@ -115,6 +124,7 @@ describe("setup browser", () => {
   it("an empty filter result says what to change", async () => {
     const user = userEvent.setup();
     render(<Harness />);
+    await openFilters(user);
     await user.selectOptions(screen.getByLabelText("Outcome"), "flat");
     expect(screen.getByText(/No setups match these filters/)).toBeInTheDocument();
   });

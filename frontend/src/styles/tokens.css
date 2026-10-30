@@ -1,14 +1,24 @@
-/* Survey Sheet+ tokens (DESIGN_DIRECTION.md section 10). */
+/* Spekrym-FX tokens. Single source of truth (DX0). */
 :root {
+  color-scheme: dark;
+
   /* base */
   --bg: #0c1420;
   --panel: #111b29;
+  --panel-2: #162234;
   --grid: #1a2738;
+  --border: var(--grid);
+  --faint: #4d5e75;
   --text: #d3dce8;
   --muted: #8a9aaf;
-  --accent: #d8bc7a; /* focus, selection, primary Scan only */
+  --accent: #d8bc7a; /* selection, focus, active tab, primary Scan only */
+  --accent-weak: color-mix(in srgb, var(--accent) 14%, transparent);
   --up: #2fb88a;
   --down: #e0575f;
+  --warn: #d9a441;
+  --info: #6ea8ff;
+  --overlay: rgba(12, 20, 32, 0.72);
+  --shadow-pop: 0 6px 18px rgba(0, 0, 0, 0.35);
 
   /* annotation roles
      alphas applied in the renderer: window 6%, range 10%, fvg 14%,
@@ -30,19 +40,63 @@
   --role-filter: #f2d16b;
   --role-context: #6e809a;
 
-  --focus-ring: #d8bc7a;
+  --focus-ring: var(--accent);
   --row-h: 24px;
   --rail-left: 260px;
   --rail-right: 300px;
   --rail-collapsed: 36px;
   --header-h: 28px;
+
+  /* motion */
+  --dur-fast: 120ms;
+  --dur-med: 180ms;
 }
 
 :root[data-density="comfortable"] {
   --row-h: 28px;
 }
 
-/* colour-blind mode: Okabe-Ito blue/orange.
+/* light theme: explicit */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --panel-2: #eef2f8;
+  --grid: #d9e0ea;
+  --faint: #9aa8bb;
+  --text: #141922;
+  --muted: #5a6678;
+  --accent: #9a7a2a;
+  --up: #1f8f6b;
+  --down: #c4434b;
+  --warn: #a8741a;
+  --info: #2f6fd0;
+  --overlay: rgba(245, 247, 251, 0.72);
+  --shadow-pop: 0 6px 18px rgba(20, 25, 34, 0.18);
+}
+
+/* light theme: OS preference when no explicit data-theme="dark" */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #f5f7fb;
+    --panel: #ffffff;
+    --panel-2: #eef2f8;
+    --grid: #d9e0ea;
+    --faint: #9aa8bb;
+    --text: #141922;
+    --muted: #5a6678;
+    --accent: #9a7a2a;
+    --up: #1f8f6b;
+    --down: #c4434b;
+    --warn: #a8741a;
+    --info: #2f6fd0;
+    --overlay: rgba(245, 247, 251, 0.72);
+    --shadow-pop: 0 6px 18px rgba(20, 25, 34, 0.18);
+  }
+}
+
+/* colour-blind mode: Okabe-Ito blue/orange (kept last so it wins in both themes).
    Always draw up candles hollow and down candles filled. */
 :root[data-cb="true"] {
   --up: #56b4e9;

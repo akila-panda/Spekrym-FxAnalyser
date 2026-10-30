@@ -1,6 +1,7 @@
 import type { DataSource } from "@/api/dataSource";
 import { ApiError } from "@/api/client";
 import { getDataSource } from "@/api/sourceFactory";
+import { scanLockKey, withScanLock } from "@/sync/scanLock";
 import { useViewStore } from "@/store/viewStore";
 import { ContractError } from "@/types/schemas";
 import { PANEL_ORDER, type Timeframe } from "@/types/market";
@@ -45,7 +46,10 @@ function release(): void {
 
 // ---------- per-panel bookkeeping ----------
 const controllers = new Map<Timeframe, AbortController>();
-const tokens: Record<Timeframe, number> = { M1: 0, M5: 0, M15: 0, H1: 0, H4: 0 };
+const tokens: Record<Timeframe, number> = { M1: 0, M5: 0, M15: 0, H1: 0, H4: 0, D: 0, W: 0 };
+
+/** True while this window itself is running a scan for the chart. */
+export const isScanLocal = (tf: Timeframe): boolean => controllers.has(tf);
 
 /** Aborts every scan in flight or queued. Late responses are dropped. */
 export function cancelAll(): void {
@@ -102,7 +106,38 @@ function autoChoose(tf: Timeframe): void {
   if (first) st.activate(tf, first.id);
 }
 
-/** Scans one chart. Unsupported charts are skipped. A new scan on a chart aborts its previous one. */
+/** The scan itself. Runs only while this window holds the cross-window lock for the exact same inputs. */
+async function runLocked(tf: Timeframe, request: ScanRequest, source: DataSource): Promise<void> {
+  controllers.get(tf)?.abort();
+  const ctl = new AbortController();
+  controllers.set(tf, ctl);
+  const token = ++tokens[tf];
+  useScanStore.getState().begin(tf);
+
+  const current = () => token === tokens[tf] && !ctl.signal.aborted;
+  try {
+    await acquire(ctl.signal);
+    let result: ScanResult;
+    try {
+      result = await source.runScan(request, ctl.signal);
+    } finally {
+      release();
+    }
+    if (!current()) return; // late response for old inputs
+    useScanStore.getState().finish(tf, result);
+    autoChoose(tf);
+  } catch (e) {
+    if (!current()) return;
+    useScanStore.getState().fail(tf, scanErrorMessage(e));
+  } finally {
+    if (controllers.get(tf) === ctl) controllers.delete(tf);
+  }
+}
+
+/**
+ * Scans one chart. Unsupported charts are skipped. A new scan on a chart aborts its previous one.
+ * If another window is already running this exact scan, this call is a no-op: its result mirrors here.
+ */
 export async function scanPanel(tf: Timeframe, source: DataSource = getDataSource()): Promise<void> {
   const st = useScanStore.getState();
   const def = selectStrategyDef(st);
@@ -116,30 +151,16 @@ export async function scanPanel(tf: Timeframe, source: DataSource = getDataSourc
     return;
   }
 
-  controllers.get(tf)?.abort();
-  const ctl = new AbortController();
-  controllers.set(tf, ctl);
-  const token = ++tokens[tf];
-  st.begin(tf);
-
-  const current = () => token === tokens[tf] && !ctl.signal.aborted;
-  try {
-    await acquire(ctl.signal);
-    let result: ScanResult;
-    try {
-      result = await source.runScan(built.request, ctl.signal);
-    } finally {
-      release();
-    }
-    if (!current()) return; // late response for old inputs
-    useScanStore.getState().finish(tf, result);
-    autoChoose(tf);
-  } catch (e) {
-    if (!current()) return;
-    useScanStore.getState().fail(tf, scanErrorMessage(e));
-  } finally {
-    if (controllers.get(tf) === ctl) controllers.delete(tf);
-  }
+  const request = built.request;
+  const key = scanLockKey({
+    tf,
+    pair: request.pair,
+    strategy: request.strategy_id,
+    params: request.params as Record<string, unknown>,
+    asOf: useViewStore.getState().asOf,
+    range: st.range,
+  });
+  await withScanLock(key, () => runLocked(tf, request, source));
 }
 
 /** One request per supported chart, at most MAX_IN_FLIGHT at a time. Each chart finishes on its own. */

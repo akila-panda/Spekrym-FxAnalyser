@@ -7,16 +7,16 @@
   flex: 1;
   padding: 3px 4px;
   font-size: 11px;
-  background: var(--panel, #1a1a1a);
-  color: var(--muted, #888);
-  border: 1px solid var(--border, #2a2a2a);
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
   border-radius: 3px;
   cursor: pointer;
 }
 .class-filter button[aria-pressed="true"] {
-  color: var(--text, #eee);
-  border-color: var(--accent, #4ea1ff);
-  background: color-mix(in srgb, var(--accent, #4ea1ff) 18%, transparent);
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-weak);
 }
 .indicator-chips {
   list-style: none;
@@ -31,7 +31,7 @@
   font-variant-numeric: tabular-nums;
   padding: 1px 6px;
   border-radius: 999px;
-  background: var(--panel, #1a1a1a);
-  border: 1px solid var(--border, #2a2a2a);
-  color: var(--muted, #aaa);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
 }

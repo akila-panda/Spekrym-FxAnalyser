@@ -10,14 +10,14 @@
   flex-direction: column;
   gap: 2px;
   font-size: 11px;
-  color: var(--muted, #888);
+  color: var(--muted);
 }
 .whatif-field input {
   width: 100%;
   font-variant-numeric: tabular-nums;
-  background: var(--panel, #1a1a1a);
-  color: var(--text, #eee);
-  border: 1px solid var(--border, #2a2a2a);
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 3px;
   padding: 2px 4px;
 }
@@ -27,19 +27,19 @@
   letter-spacing: 0.04em;
   padding: 0 5px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent, #4ea1ff) 22%, transparent);
-  color: var(--text, #eee);
+  background: color-mix(in srgb, var(--warn) 22%, transparent);
+  color: var(--text);
 }
 .whatif-caveat {
-  color: var(--muted, #888);
+  color: var(--muted);
   font-style: italic;
 }
 .whatif-reset {
   margin-top: 4px;
   font-size: 11px;
   background: none;
-  border: 1px solid var(--border, #2a2a2a);
-  color: var(--muted, #aaa);
+  border: 1px solid var(--border);
+  color: var(--muted);
   border-radius: 3px;
   padding: 2px 8px;
   cursor: pointer;

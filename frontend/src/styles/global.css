@@ -23,6 +23,7 @@ body {
 
 .mono {
   font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 button,
@@ -34,19 +35,19 @@ input {
 
 button {
   background: transparent;
-  border: 1px solid var(--grid);
+  border: 1px solid var(--border);
   border-radius: 2px;
   padding: 2px 8px;
   cursor: pointer;
 }
 
 button:hover {
-  background: var(--grid);
+  background: var(--panel-2);
 }
 
 :focus-visible {
   outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  outline-offset: 1px;
 }
 
 h1,

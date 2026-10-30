@@ -1,0 +1,23 @@
+/* F16 — Master Brain Console. Tokens only; prefix bc-. State = glyph + text; proposal/state = border shape. */
+.bc-root { display: flex; flex-direction: column; height: 100%; min-height: 0; padding: 8px; gap: 8px; background: var(--bg); color: var(--text); }
+.bc-head { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; font-size: 12px; }
+.bc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; flex: 1; min-height: 0; overflow: auto; }
+.bc-col { padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; overflow: auto; }
+.bc-col h3 { margin: 0 0 6px; font-size: 13px; }
+.bc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.bc-item { display: flex; flex-direction: column; gap: 2px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 3px; }
+.bc-row { width: 100%; display: flex; flex-direction: column; gap: 2px; min-height: 32px; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 12px; background: var(--panel); color: var(--text); border: 1px dashed var(--border); border-radius: 3px; }
+.bc-row[data-state="human_approved"] { border-style: solid; }
+.bc-row[data-state="human_rejected"] { border-style: dotted; }
+.bc-row[data-state="expired"] { border-style: dotted; opacity: 0.8; }
+.bc-row[aria-current="true"] { border-color: var(--accent); }
+.bc-item[data-state="near"] { border-style: dashed; }
+.bc-item[data-state="exhausted"] { border: 2px solid var(--warn); }
+.bc-item[data-valid="false"] { border-style: dashed; }
+.bc-item[data-granted="false"] { border-style: dotted; }
+.bc-tag, .bc-muted { color: var(--muted); }
+.bc-warn { color: var(--warn); }
+.bc-detail { margin-top: 6px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 3px; }
+.bc-detail p { margin: 0 0 4px; }
+.bc-root a { color: var(--accent); min-height: 24px; display: inline-flex; align-items: center; }
+.bc-root meter { width: 100%; }

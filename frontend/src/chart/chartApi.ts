@@ -1,8 +1,9 @@
 import {
   AreaSeries, createSeriesMarkers, HistogramSeries, LineSeries, LineType,
   type IPaneApi, type ISeriesApi, type ISeriesMarkersPluginApi, type ISeriesPrimitive,
-  type SeriesMarker, type SeriesType, type Time, type UTCTimestamp,
+  type MouseEventParams, type SeriesMarker, type SeriesType, type Time, type UTCTimestamp,
 } from "lightweight-charts";
+import { readTokens, withAlpha } from "./theme";
 import { makeCoordinates } from "@/annotations/primitives/coords";
 import type { Coordinates } from "@/annotations/primitives/types";
 import type { IndicatorSpec } from "@/annotations/toPrimitives";
@@ -16,6 +17,11 @@ export interface ChartApi {
   /** Keep the current zoom, centre on `time`. */
   centerOn(time: number): void;
   scrollToLatest(): void;
+  /** Set the visible logical range (bar indexes; may extend past the data). */
+  setLogicalRange(from: number, to: number): void;
+  getLogicalRange(): { from: number; to: number } | null;
+  /** Subscribe to visible-logical-range changes (programmatic and user). Returns unsubscribe. */
+  onLogicalRangeChange(cb: (r: { from: number; to: number } | null) => void): () => void;
   timeToX(time: number): number | null;
   priceToY(price: number): number | null;
   takeScreenshot(): HTMLCanvasElement;
@@ -29,6 +35,15 @@ export interface ChartApi {
   syncIndicators(specs: readonly IndicatorSpec[]): void;
   /** Time and price to CSS pixels, extrapolating off the loaded bars (same maths the primitives use). */
   coordinates(barSeconds: number): Coordinates;
+  /** Hovered bar time (UTC seconds), or null when the pointer leaves or is off the data. Returns unsubscribe. */
+  onCrosshairMove(cb: (time: number | null) => void): () => void;
+  /** Draw the crosshair at a bar time with `price` (v5 needs both). */
+  setCrosshair(time: number, price: number): void;
+  clearCrosshair(): void;
+  /** DX4: show or hide the crosshair's time flag (only the bottom row keeps one in the stack). */
+  setTimeFlag(visible: boolean): void;
+  /** DX4: candle line weight, 1 = full. Context rows use 0.7. */
+  setCandleAlpha(alpha: number): void;
 }
 
 /** Index of the first candle at or after `time` (clamped to the last bar). */
@@ -77,6 +92,22 @@ export function createChartApi(h: ChartHandle, getCandles: () => readonly Candle
       ts().setVisibleLogicalRange({ from: mid - half, to: mid + half });
     },
     scrollToLatest: () => ts().scrollToRealTime(),
+    setLogicalRange: (from, to) => ts().setVisibleLogicalRange({ from, to }),
+    getLogicalRange: () => {
+      const r = ts().getVisibleLogicalRange();
+      return r ? { from: r.from, to: r.to } : null;
+    },
+    onLogicalRangeChange(cb) {
+      const handler = (r: { from: number; to: number } | null) => cb(r ? { from: r.from, to: r.to } : null);
+      ts().subscribeVisibleLogicalRangeChange(handler);
+      return () => {
+        try {
+          ts().unsubscribeVisibleLogicalRangeChange(handler);
+        } catch {
+          /* chart already disposed */
+        }
+      };
+    },
     timeToX: (t) => ts().timeToCoordinate(t as UTCTimestamp),
     priceToY: (p) => h.series.priceToCoordinate(p),
     takeScreenshot: () => h.chart.takeScreenshot(),
@@ -130,6 +161,50 @@ export function createChartApi(h: ChartHandle, getCandles: () => readonly Candle
       }
     },
     coordinates: (barSeconds) => makeCoordinates(ts(), h.series, getCandles, barSeconds),
+    onCrosshairMove(cb) {
+      const handler = (p: MouseEventParams<Time>) => cb(p.time !== undefined && p.point !== undefined ? Number(p.time) : null);
+      h.chart.subscribeCrosshairMove(handler);
+      return () => {
+        try {
+          h.chart.unsubscribeCrosshairMove(handler);
+        } catch {
+          /* chart already disposed */
+        }
+      };
+    },
+    setCrosshair(time, price) {
+      try {
+        h.chart.setCrosshairPosition(price, time as UTCTimestamp, h.series);
+      } catch {
+        /* chart already disposed */
+      }
+    },
+    clearCrosshair() {
+      try {
+        h.chart.clearCrosshairPosition();
+      } catch {
+        /* chart already disposed */
+      }
+    },
+    setTimeFlag(visible) {
+      try {
+        h.chart.applyOptions({ crosshair: { vertLine: { labelVisible: visible } } });
+      } catch {
+        /* chart already disposed */
+      }
+    },
+    setCandleAlpha(alpha) {
+      try {
+        const t = readTokens();
+        const up = withAlpha(t.up, alpha);
+        const down = withAlpha(t.down, alpha);
+        h.series.applyOptions({
+          downColor: down, borderUpColor: up, borderDownColor: down, wickUpColor: up, wickDownColor: down,
+        });
+      } catch {
+        /* chart already disposed */
+      }
+    },
     attachPrimitive(p) {
       h.series.attachPrimitive(p);
       return () => {

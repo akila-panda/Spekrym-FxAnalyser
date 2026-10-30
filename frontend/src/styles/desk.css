@@ -1,0 +1,113 @@
+/* DESK — single stylesheet, class prefix dk-. Tokens only (styles/tokens.css); no new colours. */
+.dk-root { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+
+.dk-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dk-appswitch, .dk-seg { display: inline-flex; gap: 2px; }
+.dk-appswitch button, .dk-seg button {
+  padding: 3px 8px; font-size: 12px; cursor: pointer;
+  background: var(--panel); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 3px;
+}
+.dk-appswitch button[aria-pressed="true"], .dk-seg button[aria-pressed="true"] {
+  color: var(--text); border-color: var(--accent); background: var(--accent-weak, transparent);
+}
+
+.dk-pinned { display: flex; gap: 6px; padding: 2px 8px; border-bottom: 1px solid var(--border); font-size: 11px; }
+.dk-pin { padding: 0 6px; border-radius: 999px; border: 1px solid var(--border); color: var(--warn); }
+.dk-sample {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 0 4px; border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
+}
+
+.dk-restore { align-self: flex-end; margin: 4px 8px; font-size: 12px; cursor: pointer;
+  background: var(--panel); color: var(--text); border: 1px solid var(--accent); border-radius: 3px; padding: 2px 8px; }
+
+.dk-docklayout { display: flex; flex: 1; min-height: 0; gap: 1px; }
+.dk-docklayout.dk-focus { display: block; }
+.dk-dock { overflow: auto; background: var(--bg); }
+.dk-dock-left, .dk-dock-right { width: 260px; flex: 0 0 260px; display: flex; flex-direction: column; gap: 1px; }
+.dk-dock-center { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.dk-dock-bottom { display: flex; gap: 1px; min-height: 120px; }
+
+.dk-stage { flex: 1; display: grid; place-items: center; background: var(--panel); }
+.dk-stage-note { color: var(--muted); font-size: 12px; }
+
+.dk-widget { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin: 1px; display: flex; flex-direction: column; min-height: 0; }
+.dk-widget[data-pinned="true"] { border-color: var(--accent); }
+.dk-widget-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.dk-widget-actions { display: inline-flex; gap: 2px; }
+.dk-icon { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 0 3px; }
+.dk-icon:hover { color: var(--text); }
+.dk-widget-body { padding: 8px; font-size: 12px; color: var(--muted); }
+
+/* DK3 — layers panel, evidence drawer (tokens only) */
+.dk-layers { display: flex; flex-direction: column; gap: 6px; }
+.dk-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.dk-layer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.dk-check { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text); }
+.dk-field { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 11px; color: var(--muted); }
+.dk-popover { display: flex; flex-direction: column; gap: 6px; padding: 6px; margin: 2px 0 4px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); box-shadow: var(--shadow-pop); }
+.dk-chip { padding: 0 6px; font-size: 10px; cursor: pointer; background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 999px; }
+.dk-chip[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.dk-layers select, .dk-layers input[type="number"] { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; font-size: 11px; min-height: 24px; }
+.dk-layers button:not(.dk-icon):not(.dk-chip) { align-self: flex-start; padding: 3px 8px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+
+.dk-drawer { position: absolute; top: 0; right: 0; bottom: 0; width: 300px; z-index: 5; display: flex; flex-direction: column; background: var(--panel); border-left: 1px solid var(--accent); box-shadow: var(--shadow-pop); overflow: auto; }
+.dk-root { position: relative; }
+.dk-evidence { display: flex; flex-direction: column; gap: 6px; color: var(--text); }
+.dk-ev-sec h4 { margin: 0 0 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.dk-ev-sec ul { margin: 0; padding-left: 16px; }
+.dk-muted { color: var(--muted); margin: 0; }
+@media (prefers-reduced-motion: no-preference) { .dk-drawer { animation: none; } }
+
+
+/* DK6 — Prepare worksheet (tokens only) */
+.dk-prepare { display: flex; flex-direction: column; align-items: stretch; place-items: initial; gap: 8px; padding: 8px; overflow: auto; }
+.dk-rail { display: flex; gap: 2px; flex-wrap: wrap; }
+.dk-rail button, .dk-actions button, .dk-custom button, .dk-inbox-row {
+  padding: 3px 8px; font-size: 12px; min-height: 28px; cursor: pointer;
+  background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px;
+}
+.dk-rail button[aria-pressed="true"], .dk-inbox-row[aria-current="true"] { border-color: var(--accent); }
+.dk-actions { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.dk-actions button:disabled { opacity: 0.5; cursor: default; }
+.dk-card, .dk-custom { display: flex; flex-direction: column; gap: 6px; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 12px; color: var(--text); }
+.dk-card p, .dk-card ul { margin: 0; }
+.dk-custom legend { font-size: 11px; color: var(--muted); }
+.dk-custom input, .dk-custom select, .dk-notes textarea { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; font-size: 12px; min-height: 24px; }
+.dk-notes { flex-direction: column; align-items: stretch; }
+.dk-checklist, .dk-inbox, .dk-snaps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.dk-inbox-row { width: 100%; text-align: left; display: flex; gap: 6px; align-items: baseline; }
+.dk-glyph { width: 1.2em; }
+
+/* DK12 — Confluence widget (tokens only) */
+.dk-conf { display: flex; flex-direction: column; gap: 8px; color: var(--text); }
+.dk-conf h4 { margin: 0 0 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.dk-conf ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.dk-conf-row { width: 100%; text-align: left; display: flex; gap: 6px; align-items: baseline; padding: 3px 8px; font-size: 12px; min-height: 28px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.dk-conf-row[aria-current="true"] { border-color: var(--accent); }
+.dk-conf-row.is-contra { border-style: dashed; }
+
+/* DK13 — Decision Brief (tokens only) */
+.dk-brief { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 12px; }
+.dk-brief p { margin: 0; }
+.dk-brief h4 { margin: 0 0 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.dk-brief-state { font-size: 13px; }
+.dk-brief-ans { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.dk-brief-more summary { cursor: pointer; min-height: 24px; color: var(--muted); }
+.dk-brief-more ul { margin: 0; padding-left: 16px; }
+
+/* DK14 — Live: Change Feed + Readiness (tokens only) */
+.dk-feed, .dk-ready { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 12px; }
+.dk-feed h4, .dk-ready h4 { margin: 0 0 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.dk-feed p, .dk-ready p { margin: 0; }
+.dk-feed ul, .dk-feed-list, .dk-ready ol { margin: 0; padding-left: 16px; }
+.dk-feed-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.dk-feed-row { display: flex; flex-direction: column; gap: 2px; }
+.dk-feed-row[data-ack="true"] { opacity: 0.75; }
+.dk-feed-row time { font-variant-numeric: tabular-nums; color: var(--muted); }
+.dk-thesis { padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; }
+/* DK15 — context widgets */
+.dk-ctx { display: flex; flex-direction: column; gap: 4px; color: var(--text); font-size: 12px; }
+.dk-ctx p { margin: 0; }
+.dk-ctx ul { margin: 0; padding-left: 16px; }

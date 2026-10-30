@@ -223,3 +223,36 @@
 .tf-chip { font-size: 11px; line-height: 14px; padding: 2px 6px; color: var(--muted); }
 .tf-chip[aria-pressed="true"] { color: var(--text); border-color: var(--text); }
 .summary-strip { flex-wrap: wrap; }
+
+/* ---- DX3: right rail, two levels ---- */
+.rail-body--split { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; padding-bottom: 0; }
+.rail-split { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 8px; }
+.rail-level1 { flex: 0 0 40%; min-height: 120px; overflow: auto; }
+.rail-level2 { flex: 1; min-height: 0; overflow: auto; border-top: 1px solid var(--grid); padding: 8px 0; }
+.rail-split[data-selected="false"] .rail-level1 { flex: 1 1 auto; }
+.rail-split[data-selected="false"] .rail-level2 { flex: 0 0 auto; max-height: 40%; }
+.rail-level1 .setup-tabs { position: sticky; top: 0; z-index: 1; background: var(--panel); padding-bottom: 2px; }
+.rail-level1 .setup-rows { max-height: none; overflow: visible; margin-bottom: 0; }
+.filters-toggle { border-color: transparent; padding: 0 4px; font-size: 12px; color: var(--text); }
+.filters-toggle[aria-expanded="true"] { border-color: var(--grid); }
+.filters-summary { margin: 0 0 4px 4px; }
+.rail-caret { display: inline-block; width: 10px; color: var(--muted); }
+.setup-header { padding-bottom: 6px; }
+.setup-header-main { display: flex; align-items: baseline; gap: 10px; }
+.setup-dir { font-size: 15px; line-height: 20px; font-weight: 600; color: var(--text); }
+.setup-r { font-size: 15px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); }
+.setup-chip { border: 1px solid var(--grid); border-radius: 999px; padding: 0 8px; }
+.rail-accordion { display: flex; flex-direction: column; }
+.rail-section { border-top: 1px solid var(--grid); }
+.rail-section-head { margin: 0; }
+.rail-section-head button {
+  display: flex; align-items: center; width: 100%; min-height: var(--row-h);
+  border: 0; border-radius: 0; background: none; text-align: left; font-size: 13px; color: var(--text);
+}
+.rail-section[data-open="true"] .rail-section-head button { font-weight: 500; }
+.rail-section-body { padding: 4px 4px 10px 14px; }
+.rail-section-body .explain-head .rail-section-title { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .rail-section-body { animation: rail-open 180ms ease-out; }
+}
+@keyframes rail-open { from { opacity: 0; } to { opacity: 1; } }

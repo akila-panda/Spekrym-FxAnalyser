@@ -1,0 +1,123 @@
+/* F1 — Intelligence Canvas shell. Tokens only (styles/tokens.css); no new colours. Prefix vc-. */
+.vc-root { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+
+.vc-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vc-title { font-size: 13px; }
+.vc-pair { font-variant-numeric: tabular-nums; color: var(--muted); }
+.vc-seg, .vc-presets { display: inline-flex; gap: 2px; }
+.vc-seg button, .vc-preset {
+  padding: 3px 8px; font-size: 12px; cursor: pointer;
+  background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 3px;
+}
+.vc-seg button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.vc-preset:disabled { opacity: 0.5; cursor: default; }
+
+.vc-body { display: flex; flex: 1; min-height: 0; gap: 1px; }
+.vc-stage { flex: 1 1 72%; min-width: 0; display: grid; place-items: center; background: var(--panel); padding: 8px; }
+.vc-stage-note { color: var(--muted); font-size: 12px; text-align: center; max-width: 42ch; }
+.vc-rail { flex: 0 0 300px; display: flex; flex-direction: column; gap: 1px; overflow: auto; background: var(--bg); }
+
+.vc-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; margin: 1px; padding: 8px; }
+.vc-panel h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vc-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.vc-source {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 4px 8px; font-size: 12px; min-height: 28px; cursor: pointer;
+  background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px;
+}
+.vc-source[aria-current="true"] { border-color: var(--accent); }
+.vc-source-state { color: var(--muted); font-size: 11px; }
+.vc-overlay { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 8px; min-height: 28px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.vc-overlay[aria-pressed="true"] { border-color: var(--accent); }
+
+/* F5 — Prepare step rail */
+.vc-prepare { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 4px 8px; border-bottom: 1px solid var(--border); }
+.vc-steprail { display: inline-flex; gap: 2px; flex-wrap: wrap; }
+.vc-steprail button {
+  padding: 3px 8px; font-size: 12px; min-height: 28px; cursor: pointer;
+  background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 3px;
+}
+.vc-steprail button[aria-current="true"] { color: var(--text); border-color: var(--accent); }
+.vc-question { font-size: 12px; color: var(--muted); }
+.vc-freeze { padding: 3px 8px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--accent); border-radius: 3px; }
+.vc-plan-badge { font-size: 11px; color: var(--muted); border: 1px solid var(--accent); border-radius: 999px; padding: 0 6px; }
+
+/* F6 — Live / Monitor */
+.vc-monitor { align-self: stretch; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 640px; }
+.vc-beforenow { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--muted); }
+.vc-thesis-ok { color: var(--text); }
+.vc-thesis-broken { color: var(--warn); }
+.vc-feed { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.vc-feed-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 8px; font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; }
+.vc-feed-row[data-cat="invalidated"], .vc-feed-row[data-cat="deteriorated"] { border-color: var(--warn); }
+.vc-feed-cat { text-transform: capitalize; color: var(--text); min-width: 9ch; }
+
+/* F7 — Review (four axes) */
+.vc-review { align-self: stretch; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 640px; }
+.vc-axes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.vc-axis { display: flex; flex-direction: column; gap: 4px; padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; text-align: left; }
+.vc-axis h4 { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vc-axis-verdict { font-size: 13px; color: var(--text); }
+.vc-selected { margin: 0; font-size: 12px; color: var(--text); }
+
+.vc-timeline { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 4px 8px; border-top: 1px solid var(--border); font-size: 11px; }
+.vc-timeline-label { text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vc-event { padding: 0 6px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); }
+
+/* F8 — Explore */
+.vc-explore { align-self: stretch; display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 640px; padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; text-align: left; }
+.vc-explore h4 { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vc-engine { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 32px; padding: 3px 8px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 3px; }
+.vc-engine[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.vc-explore-actions { display: flex; align-items: center; gap: 8px; }
+.vc-explore-actions button, .vc-link { padding: 3px 8px; min-height: 32px; display: inline-flex; align-items: center; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; text-decoration: underline; }
+.vc-explore-actions button:disabled { cursor: default; color: var(--muted); text-decoration: none; }
+
+/* F9 — Regime strip + family context panels */
+.vc-regime { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 4px 8px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.vc-regime-title { text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; color: var(--muted); }
+.vc-regime-segs { list-style: none; margin: 0; padding: 0; display: inline-flex; gap: 2px; flex-wrap: wrap; }
+.vc-regime-seg { padding: 0 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); }
+.vc-regime-seg[aria-current="true"] { color: var(--text); border-color: var(--accent); }
+.vc-regime-seg[data-degraded="true"] { border-style: dashed; }
+.vc-regime-groups { display: inline-flex; gap: 12px; flex-wrap: wrap; color: var(--muted); }
+.vc-regime-warn { color: var(--warn); }
+.vc-family { display: flex; flex-direction: column; gap: 2px; padding: 4px 8px; font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 3px; }
+.vc-family[data-status="unavailable"] { border-style: dashed; }
+
+/* F11 — Scenario Studio (B = dashed + ◇, C = double border + ▣; shape/text, not colour alone) */
+.vc-scn { align-self: stretch; display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 640px; padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; text-align: left; }
+.vc-scn h4 { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vc-scn-item { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 32px; padding: 3px 8px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--muted); border-radius: 3px; border: 1px dashed var(--border); }
+.vc-scn-item[data-cat="C"] { border: 3px double var(--border); }
+.vc-scn-item[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.vc-scn-detail { display: flex; flex-direction: column; gap: 6px; padding: 6px; border: 1px dashed var(--border); border-radius: 3px; }
+.vc-scn-detail[data-cat="C"] { border: 3px double var(--border); }
+.vc-scn-branch, .vc-scn-forecast { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+.vc-scn-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.vc-scn-inv { margin: 0; font-size: 12px; color: var(--text); }
+.vc-scn-p0 { margin: 0; font-size: 12px; color: var(--warn); font-weight: 700; }
+.vc-scn-chart { margin: 0; padding: 6px; font-size: 12px; border: 1px dashed var(--border); border-radius: 3px; }
+.vc-scn-chart[data-cat="C"] { border: 3px double var(--border); }
+.vc-scn-chart figcaption { color: var(--muted); margin-bottom: 2px; }
+
+/* F12 — Intelligence Timeline + Replay (recorded ● solid vs reconstructed ◌ dashed; text + glyph + border) */
+.vc-tl-mode { font-size: 11px; color: var(--text); border: 1px solid var(--accent); border-radius: 999px; padding: 0 6px; }
+.vc-tl-ctl { display: inline-flex; gap: 2px; }
+.vc-tl-ctl button { padding: 3px 8px; min-height: 32px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.vc-tl-ctl button:disabled { cursor: default; color: var(--muted); }
+.vc-tl-list { list-style: none; margin: 0; padding: 0; display: inline-flex; gap: 4px; flex-wrap: wrap; }
+button.vc-event { min-height: 32px; font-size: 11px; cursor: pointer; background: var(--panel); }
+button.vc-event[data-origin="recorded"] { border-style: solid; color: var(--text); }
+button.vc-event[data-origin="reconstructed"] { border-style: dashed; }
+
+/* F13 — Cross-engine layer: 5 evidence identities by glyph + name + border SHAPE (not colour) */
+.vc-eng-legend { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.vc-eng-key, .vc-eng-item { font-size: 11px; padding: 2px 6px; background: var(--panel); border: 1px solid var(--border); border-radius: 3px; color: var(--text); }
+.vc-eng-item { font-size: 12px; }
+[data-border="solid"] { border-style: solid; }
+[data-border="dotted"] { border-style: dotted; }
+[data-border="dashed"] { border-style: dashed; }
+[data-border="double"] { border: 3px double var(--border); }
+[data-border="thick"] { border: 3px solid var(--accent); }
+.vc-eng-item[data-p0="true"] { border-color: var(--warn); }

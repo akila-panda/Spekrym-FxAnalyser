@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { Icon } from "@/components/ui/Icon";
 import type { ParamDef, ParamValue } from "@/types";
 import { selectStrategyDef, useScanStore } from "@/scan/scanStore";
 import { changedKeys, validateAll } from "@/scan/paramState";
@@ -60,7 +61,7 @@ export function ParamForm() {
             <Control def={p} value={values[p.key] ?? p.default} id={id} errId={errId} invalid={!!err} onChange={(v) => setParam(p.key, v)} />
             {changed.has(p.key) && (
               <button type="button" className="icon-btn" aria-label={`Reset ${p.label}`} title="Reset to default" onClick={() => resetParam(p.key)}>
-                ↺
+                <Icon name="reset" />
               </button>
             )}
             {p.help && <p className="hint">{p.help}</p>}

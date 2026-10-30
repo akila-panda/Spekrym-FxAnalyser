@@ -4,7 +4,7 @@ import { decodeState, encodeState, type ShareState } from "./urlState";
 describe("urlState codec", () => {
   it("round-trips a full state", () => {
     const s: ShareState = {
-      pair: "USD_JPY", tz: "local", linked: false, layout: "focus",
+      pair: "USD_JPY", tz: "local", linked: false, layout: "focus", mode: "review",
       strategy: "orb", from: "2025-01-01", to: "2025-02-01",
       params: { range_minutes: 15, mode: "breakout" },
     };
@@ -30,6 +30,12 @@ describe("urlState codec", () => {
   it("coerces numeric params to numbers and keeps strings", () => {
     const got = decodeState("p.range_minutes=15&p.mode=breakout");
     expect(got.params).toEqual({ range_minutes: 15, mode: "breakout" });
+  });
+
+  it("DX10: encodes and validates the mode param", () => {
+    expect(encodeState({ mode: "investigate" })).toBe("mode=investigate");
+    expect(decodeState("mode=review").mode).toBe("review");
+    expect(decodeState("mode=spiral")).toEqual({});
   });
 
   it("omits absent fields from the query", () => {

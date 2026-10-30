@@ -1,0 +1,97 @@
+/* DX7: chrome polish. Tokens only; no raw colours (tokens.test enforces it). */
+.icon { flex: none; vertical-align: -2px; }
+span.rail-caret { display: inline-flex; align-items: center; width: 14px; margin-right: 2px; }
+button.icon-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 22px; }
+button.resnap,
+button.timeline-btn { display: inline-flex; align-items: center; gap: 4px; border-radius: 3px; }
+.crumb-sep { display: inline-flex; padding: 0 2px; }
+.live-dot { display: inline-flex; vertical-align: middle; }
+.menu-item { display: flex; align-items: center; gap: 6px; }
+
+/* underline tabs */
+.setup-tabs { gap: 12px; border-bottom: 1px solid var(--grid); }
+.setup-tabs button[role="tab"] {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 2px;
+  background: none;
+  color: var(--muted);
+}
+.setup-tabs button[role="tab"][aria-selected="true"] { color: var(--text); border-bottom: 2px solid var(--accent); }
+
+/* mono tabular numerals in lists and readouts */
+.setup-row .outcome,
+.analytics-stats dd,
+.r-hist-count,
+.timeline-readout {
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.setup-row .outcome { text-align: right; }
+
+/* overflow menu: display settings */
+.overflow-pop section + section { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--grid); }
+.overflow-row { display: flex; gap: 12px; margin-bottom: 6px; }
+.overflow-row label { display: flex; flex: 1; flex-direction: column; gap: 2px; font-size: 11px; color: var(--muted); }
+
+/* guided empty stage */
+.empty-stage { position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; pointer-events: none; }
+.empty-card {
+  pointer-events: auto;
+  min-width: 260px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--grid);
+  border-radius: 6px;
+  box-shadow: var(--shadow-pop);
+  color: var(--text);
+}
+.empty-card h2 { margin-bottom: 8px; font-size: 15px; }
+.empty-steps { display: grid; gap: 4px; margin: 0 0 8px; padding: 0; list-style: none; }
+.empty-steps li { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.empty-steps li[aria-current="step"] { color: var(--text); font-weight: 500; }
+.empty-steps .n {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--grid);
+  border-radius: 999px;
+  font-size: 11px;
+}
+.empty-steps li[aria-current="step"] .n { border-color: var(--accent); color: var(--accent); }
+
+/* shortcuts sheet */
+.sheet-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--overlay); }
+.sheet {
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--grid);
+  border-radius: 6px;
+  box-shadow: var(--shadow-pop);
+}
+.sheet header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.sheet h2 { font-size: 15px; }
+.sheet dl { display: grid; gap: 6px; margin: 0; }
+.sheet-row { display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: center; }
+.sheet dt { display: flex; gap: 4px; }
+.sheet dd { margin: 0; color: var(--muted); }
+kbd {
+  padding: 0 6px;
+  border: 1px solid var(--grid);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  font-size: 11px;
+}
+
+/* tips */
+.tip-line { display: flex; align-items: center; gap: 4px; margin: 8px 0 0; font-size: 11px; color: var(--muted); }
+.tip-line span { flex: 1; }
+button.tip-dismiss { border-color: transparent; padding: 0 4px; }

@@ -1,12 +1,12 @@
 .analytics {
-  border-top: 1px solid var(--border, #2a2a2a);
+  border-top: 1px solid var(--border);
   padding: 8px 10px;
   font-size: 12px;
 }
 .analytics-head {
   background: none;
   border: none;
-  color: var(--text, #ddd);
+  color: var(--text);
   cursor: pointer;
   font: inherit;
   font-weight: 600;
@@ -30,7 +30,7 @@
   gap: 8px;
 }
 .analytics-stats dt {
-  color: var(--muted, #888);
+  color: var(--muted);
 }
 .analytics-stats dd {
   margin: 0;
@@ -41,12 +41,12 @@
   height: 32px;
 }
 .equity-spark polyline {
-  stroke: var(--accent, #4ea1ff);
+  stroke: var(--accent);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 .equity-spark .equity-zero {
-  stroke: var(--muted, #666);
+  stroke: var(--muted);
   stroke-width: 0.5;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 2 2;
@@ -66,14 +66,14 @@
   gap: 6px;
 }
 .r-hist-label {
-  color: var(--muted, #888);
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 .r-hist-bar {
   display: inline-block;
   height: 8px;
   min-width: 1px;
-  background: var(--accent, #4ea1ff);
+  background: var(--accent);
   border-radius: 2px;
 }
 .r-hist-count {
@@ -81,7 +81,7 @@
   font-variant-numeric: tabular-nums;
 }
 .analytics-note {
-  color: var(--muted, #888);
+  color: var(--muted);
   font-style: italic;
   margin: 0;
 }

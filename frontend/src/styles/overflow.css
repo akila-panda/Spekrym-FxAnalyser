@@ -1,0 +1,76 @@
+/* DX6: header minimalism + context-sensitive left rail */
+.header-bar { flex-wrap: nowrap; gap: 8px; }
+.header-bar > strong { white-space: nowrap; font-size: 12px; }
+.header-bar select,
+.header-bar input { min-width: 0; }
+
+.segmented { gap: 0; }
+.segmented button { border-radius: 0; margin-left: -1px; padding: 0 8px; }
+.segmented button:first-child { border-radius: 2px 0 0 2px; margin-left: 0; }
+.segmented button:last-child { border-radius: 0 2px 2px 0; }
+.segmented button[aria-pressed="true"] { position: relative; z-index: 1; background: var(--accent-weak); }
+
+.link-toggle button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+
+.overflow-menu { position: relative; display: inline-flex; }
+.overflow-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  width: 340px;
+  max-width: calc(100vw - 16px);
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid var(--grid);
+  border-radius: 6px;
+  box-shadow: var(--shadow-pop);
+}
+.overflow-pop h3 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.overflow-pop .preset-bar { flex-wrap: wrap; gap: 6px; }
+.overflow-pop .preset-bar input[type="text"] { flex: 1 1 120px; min-width: 0; }
+
+.rail-group { border-top: 1px solid var(--grid); margin-bottom: 8px; }
+.rail-group-head { margin: 0; }
+.rail-group-head button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--row-h);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: left;
+  font-size: 13px;
+  color: var(--text);
+}
+.rail-group-body { padding: 4px 0 8px; }
+.rail-count { color: var(--muted); margin-left: 4px; }
+
+.param-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: var(--row-h);
+  padding: 2px 6px;
+  margin-bottom: 8px;
+  text-align: left;
+  color: var(--text);
+  font-size: 12px;
+  border-color: var(--grid);
+}
+.ps-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ps-edit { color: var(--muted); font-size: 11px; }
+.stale-dot { color: var(--warn); font-size: 10px; }
+
+/* DX10: mode switch + opt-in auto-hide */
+.mode-switch button { white-space: nowrap; }
+.overflow-check { display: flex; align-items: center; gap: 6px; margin: 6px 0; font-size: 12px; color: var(--text); cursor: pointer; }

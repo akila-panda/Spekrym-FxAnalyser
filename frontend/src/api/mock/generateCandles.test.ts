@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TF_SECONDS, TIMEFRAMES, type Candle } from "@/types/market";
+import { TF_ANCHOR, TF_SECONDS, TIMEFRAMES, type Candle } from "@/types/market";
 import { generateDataset, getDataset, isMarketClosed, MOCK_END, MOCK_START } from "./generateCandles";
 
 const ds = getDataset("EUR_USD");
@@ -20,7 +20,7 @@ describe("generateCandles", () => {
         expect(c.low).toBeGreaterThan(0);
         expect(c.volume).toBeGreaterThan(0);
         expect(c.time).toBeGreaterThan(prev);
-        expect(c.time % TF_SECONDS[tf]).toBe(0);
+        expect((c.time - TF_ANCHOR[tf]) % TF_SECONDS[tf]).toBe(0);
         prev = c.time;
       }
     }

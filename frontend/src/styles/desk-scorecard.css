@@ -1,0 +1,13 @@
+/* DESK DK19 — level scorecard. Tokens only; no new colours. */
+.dk-score { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.dk-score-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dk-score button { padding: 3px 8px; font-size: 12px; cursor: pointer; min-height: 32px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.dk-score button:disabled { color: var(--muted); cursor: not-allowed; }
+.dk-score button[aria-pressed="true"] { border-color: var(--accent); }
+.dk-score .dk-seg { flex-wrap: wrap; }
+.dk-score-row { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.dk-score-row select { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; padding: 2px 4px; }
+.dk-score-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.dk-score-table caption { text-align: left; color: var(--muted); padding-bottom: 4px; }
+.dk-score-table th, .dk-score-table td { text-align: left; padding: 2px 6px; border-bottom: 1px solid var(--border); font-weight: normal; }
+.dk-score-table thead th { color: var(--muted); }

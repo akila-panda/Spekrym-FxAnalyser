@@ -1,0 +1,19 @@
+/* F10 — Trade journal / Trade-Intelligence panel. Tokens only; prefix vj-. */
+.vj-root { display: flex; flex-direction: column; height: 100%; min-height: 0; padding: 8px; gap: 8px; background: var(--bg); color: var(--text); }
+.vj-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vj-cats { display: inline-flex; gap: 2px; flex-wrap: wrap; }
+.vj-cats button { padding: 3px 8px; min-height: 32px; font-size: 12px; cursor: pointer; background: var(--panel); color: var(--muted); border: 1px solid var(--border); border-radius: 3px; }
+.vj-cats button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+.vj-note { margin: 0; font-size: 12px; }
+.vj-body { display: flex; gap: 8px; flex: 1; min-height: 0; }
+.vj-list { list-style: none; margin: 0; padding: 0; flex: 1 1 55%; overflow: auto; display: flex; flex-direction: column; gap: 2px; }
+.vj-row { width: 100%; display: flex; gap: 8px; align-items: center; min-height: 32px; padding: 3px 8px; font-size: 12px; text-align: left; cursor: pointer; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.vj-row[aria-current="true"] { border-color: var(--accent); }
+.vj-row[data-cat="counterfactual"], .vj-row[data-cat="eligible"] { border-style: dashed; }
+.vj-row[data-cat="rejected"] { border-left-width: 3px; }
+.vj-muted { color: var(--muted); }
+.vj-detail { flex: 1 1 45%; padding: 8px; font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; overflow: auto; }
+.vj-detail h4, .vj-detail h5 { margin: 0 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.vj-dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 8px; margin: 0 0 8px; }
+.vj-dl dt { color: var(--muted); }
+.vj-dl dd { margin: 0; }

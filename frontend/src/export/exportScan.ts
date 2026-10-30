@@ -6,21 +6,38 @@ const cell = (v: unknown): string => {
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 
+/** Neutralises spreadsheet formula injection in free text. */
+const safeText = (s: string): string => (/^[=+\-@\t\r]/.test(s) ? `'${s}` : s);
+
+export interface ReviewCsv {
+  mark?: string;
+  note?: string;
+}
+
 const COLUMNS = [
   "setup_id", "status", "direction", "date", "focus_from", "focus_to",
   "result", "r_multiple", "net_pips", "cost_pips", "exit_reason", "bars_held",
 ] as const;
 
-/** One row per setup; valid setups carry outcome fields, rejected ones leave them blank. */
-export function toCsv(result: ScanResult): string {
-  const rows = result.setups.map((s) =>
-    [
+/**
+ * One row per setup; valid setups carry outcome fields, rejected ones leave them blank.
+ * With `review`, appends `review` and `note` columns (human review, not strategy result).
+ */
+export function toCsv(result: ScanResult, review?: (setupId: string) => ReviewCsv | undefined): string {
+  const header = review ? [...COLUMNS, "review", "note"] : [...COLUMNS];
+  const rows = result.setups.map((s) => {
+    const cols: unknown[] = [
       s.id, s.status, s.direction ?? "", s.date, iso(s.focus.from), iso(s.focus.to),
       s.outcome?.result ?? "", s.outcome?.r_multiple ?? "", s.outcome?.net_pips ?? "",
       s.outcome?.cost_pips ?? "", s.outcome?.exit_reason ?? "", s.outcome?.bars_held ?? "",
-    ].map(cell).join(","),
-  );
-  return [COLUMNS.join(","), ...rows].join("\n");
+    ];
+    if (review) {
+      const r = review(s.id);
+      cols.push(r?.mark ?? "", safeText(r?.note ?? ""));
+    }
+    return cols.map(cell).join(",");
+  });
+  return [header.join(","), ...rows].join("\n");
 }
 
 /** Full scan result as pretty JSON (setups, summary, params, warnings). */

@@ -46,7 +46,7 @@ export function createMockSource(o: MockSourceOptions = {}): DataSource {
       await sleep(delay, signal);
       const ds = getDataset(pair, seed);
       const b = (tf: (typeof TIMEFRAMES)[number]) => ({ first: ds[tf][0]?.time ?? null, last: ds[tf][ds[tf].length - 1]?.time ?? null });
-      return { pair, bounds: { M1: b("M1"), M5: b("M5"), M15: b("M15"), H1: b("H1"), H4: b("H4") } };
+      return { pair, bounds: { M1: b("M1"), M5: b("M5"), M15: b("M15"), H1: b("H1"), H4: b("H4"), D: b("D"), W: b("W") } };
     },
     async getStrategies(signal) {
       await sleep(delay, signal);

@@ -12,14 +12,21 @@ import { applyTradeOverrides, useOverrideStore } from "./overrides";
 import { hitPin, pinKey, pinMarkers, type Pin } from "./setupPins";
 import { visibleAnnotations } from "./visibility";
 
+const NO_EXTRA: readonly Annotation[] = [];
+
 /** Connects the active setup to one panel: routing, legend toggles, Steps reveal, setup pins, hover. */
 export function usePanelAnnotations(
   api: ChartApi | null, tf: Timeframe, pair: Pair, candles: readonly unknown[], pins: readonly Pin[] = [],
   localOnly = false,
+  /** Extra annotations merged after the active setup's (Desk pipeline). They obey the same routing/legend toggles. */
+  extra: readonly Annotation[] = NO_EXTRA,
 ) {
   const rawAnnotations = useAnnotationStore((s) => s.annotations);
   const trades = useOverrideStore((s) => s.trades);
-  const annotations = useMemo(() => applyTradeOverrides(rawAnnotations, trades), [rawAnnotations, trades]);
+  const annotations = useMemo(() => {
+    const base = applyTradeOverrides(rawAnnotations, trades);
+    return extra.length ? [...base, ...extra] : base;
+  }, [rawAnnotations, trades, extra]);
   const steps = useAnnotationStore((s) => s.steps);
   const hiddenGroups = useAnnotationStore((s) => s.hiddenGroups);
   const step = useAnnotationStore((s) => s.step);
@@ -78,7 +85,8 @@ export function usePanelAnnotations(
     if (pin) useScanStore.getState().activate(pin.tf, pin.id);
   };
 
-  return { hover, onMouseMove, onMouseLeave, onClick };
+  /** `count`: annotations drawn on this panel for the active setup (DX4 dims rows with none). */
+  return { hover, onMouseMove, onMouseLeave, onClick, count: visible.length };
 }
 
 /** Moves a chart to the active setup once its candles are loaded. Phase 9 gates this behind the Link toggle. */

@@ -1,0 +1,29 @@
+/* F17 — Portfolio Command. Tokens only; prefix pc-. State = glyph + text; band/state = border shape. */
+.pc-root { display: flex; flex-direction: column; height: 100%; min-height: 0; padding: 8px; gap: 8px; background: var(--bg); color: var(--text); }
+.pc-head { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; font-size: 12px; }
+.pc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; flex: 1; min-height: 0; overflow: auto; align-content: start; }
+.pc-col { padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; overflow: auto; }
+.pc-wide { grid-column: 1 / -1; }
+.pc-col h3 { margin: 0 0 6px; font-size: 13px; }
+.pc-col h4 { margin: 8px 0 4px; font-size: 12px; }
+.pc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.pc-item { display: flex; flex-direction: column; gap: 2px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 3px; }
+.pc-item[data-inactive="true"] { border-style: dotted; }
+.pc-item[data-band="near"] { border-style: dashed; }
+.pc-item[data-band="breach"], .pc-alert { border: 2px solid var(--warn); color: var(--warn); }
+.pc-row { width: 100%; display: flex; flex-direction: column; gap: 2px; min-height: 32px; padding: 4px 8px; text-align: left; cursor: pointer; font-size: 12px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.pc-row[data-stage="paused"], .pc-row[data-stage="retired"] { border-style: dotted; }
+.pc-row[data-stage="shadow"] { border-style: dashed; }
+.pc-row[aria-current="true"], .pc-cell[aria-current="true"] { border-color: var(--accent); }
+.pc-scroll { overflow-x: auto; }
+.pc-table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.pc-table th, .pc-table td { padding: 2px; text-align: left; font-weight: normal; }
+.pc-cell { width: 100%; min-height: 32px; padding: 4px 6px; text-align: left; cursor: pointer; font-size: 12px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.pc-cell[data-state="eligible"] { border-style: solid; }
+.pc-cell[data-state="ineligible"], .pc-cell[data-state="tier"] { border-style: dashed; }
+.pc-cell[data-state="none"] { border-style: dotted; color: var(--muted); }
+.pc-cell[data-state="vetoed"] { border: 2px solid var(--warn); color: var(--warn); }
+.pc-muted { color: var(--muted); }
+.pc-warn { color: var(--warn); }
+.pc-root a { color: var(--accent); min-height: 24px; display: inline-flex; align-items: center; }
+.pc-root meter { width: 100%; }

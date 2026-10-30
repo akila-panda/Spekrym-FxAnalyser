@@ -1,5 +1,6 @@
 import { PANEL_ORDER, type Timeframe } from "@/types/market";
 import type { ScanResult, Setup, Step } from "@/types";
+import { matchesFailedCondition } from "./rejections";
 
 export type Tab = Timeframe | "all";
 export const TABS: readonly Tab[] = [...PANEL_ORDER, "all"];
@@ -7,6 +8,18 @@ export const TABS: readonly Tab[] = [...PANEL_ORDER, "all"];
 export type DirectionFilter = "all" | "long" | "short";
 export type OutcomeFilter = "all" | "win" | "loss" | "flat";
 export type SortKey = "date_asc" | "date_desc" | "r_desc" | "r_asc";
+
+/** DX12: a human review mark. Not a strategy result. */
+export type ReviewMark = "right" | "wrong" | "revisit";
+export type ReviewFilter = "all" | "unmarked" | ReviewMark;
+/** Looks up the review mark of one setup (by timeframe and id). Supplied by callers; absent = no review filtering. */
+export type ReviewLookup = (tf: Timeframe, setupId: string) => ReviewMark | undefined;
+
+export function matchesReview(filter: ReviewFilter, mark: ReviewMark | undefined): boolean {
+  if (filter === "all") return true;
+  if (filter === "unmarked") return mark === undefined;
+  return mark === filter;
+}
 
 export interface SetupFilters {
   /** Rejected candidates are hidden unless this is on. */
@@ -17,10 +30,14 @@ export interface SetupFilters {
   from: string;
   to: string;
   sort: SortKey;
+  /** DX8: only rejected candidates whose first failed condition has this key. Empty = off. Window-scoped. */
+  failedCondition: string;
+  /** DX12: filter by human review mark. Window-scoped, never replicated. */
+  review: ReviewFilter;
 }
 
 export const DEFAULT_FILTERS: SetupFilters = {
-  showRejected: false, direction: "all", outcome: "all", from: "", to: "", sort: "date_asc",
+  showRejected: false, direction: "all", outcome: "all", from: "", to: "", sort: "date_asc", failedCondition: "", review: "all",
 };
 
 /** Fewer valid setups than this and the strip says so plainly. */
@@ -45,9 +62,11 @@ export function filtersChanged(f: SetupFilters): boolean {
   return (Object.keys(DEFAULT_FILTERS) as (keyof SetupFilters)[]).some((k) => f[k] !== DEFAULT_FILTERS[k]);
 }
 
-export function filterSetups(rows: readonly SetupRow[], f: SetupFilters): SetupRow[] {
-  return rows.filter(({ setup: s }) => {
+export function filterSetups(rows: readonly SetupRow[], f: SetupFilters, review?: ReviewLookup): SetupRow[] {
+  return rows.filter(({ tf, setup: s }) => {
+    if (review && !matchesReview(f.review, review(tf, s.id))) return false;
     if (s.status === "rejected" && !f.showRejected) return false;
+    if (f.failedCondition && !matchesFailedCondition(s, f.failedCondition)) return false;
     if (f.direction !== "all" && s.direction !== f.direction) return false;
     if (f.outcome !== "all" && s.outcome?.result !== f.outcome) return false;
     if (f.from && s.date < f.from) return false;
@@ -80,19 +99,19 @@ export function sortRows(rows: readonly SetupRow[], sort: SortKey): SetupRow[] {
 }
 
 /** Rows for a tab. "all" merges every scanned timeframe; each row keeps its own timeframe. */
-export function rowsFor(panels: PanelsLike, tab: Tab, f: SetupFilters): SetupRow[] {
+export function rowsFor(panels: PanelsLike, tab: Tab, f: SetupFilters, review?: ReviewLookup): SetupRow[] {
   const tfs = tab === "all" ? PANEL_ORDER : [tab];
   const rows: SetupRow[] = [];
   for (const tf of tfs) {
     for (const setup of panels[tf].result?.setups ?? []) rows.push({ key: rowKey(tf, setup.id), tf, setup });
   }
-  return sortRows(filterSetups(rows, f), f.sort);
+  return sortRows(filterSetups(rows, f, review), f.sort);
 }
 
 /** Counts shown on the tabs: what each tab would list with the current filters. */
-export function tabCounts(panels: PanelsLike, f: SetupFilters): Record<Tab, number> {
+export function tabCounts(panels: PanelsLike, f: SetupFilters, review?: ReviewLookup): Record<Tab, number> {
   const out = {} as Record<Tab, number>;
-  for (const t of TABS) out[t] = rowsFor(panels, t, f).length;
+  for (const t of TABS) out[t] = rowsFor(panels, t, f, review).length;
   return out;
 }
 

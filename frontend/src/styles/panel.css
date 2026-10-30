@@ -122,11 +122,39 @@
   color: var(--muted);
 }
 .panel-note[data-kind="error"] { color: var(--text); }
-.panel-hatch {
+
+/* ---- DX2: collapsed (unsupported) row ---- */
+.panel-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0 8px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 14px;
+}
+.panel-strip .tf-label { font-size: 13px; color: var(--text); font-weight: 500; }
+.strip-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.strip-info { min-width: 22px; height: 20px; padding: 0 4px; border-color: transparent; color: var(--muted); }
+.strip-info[aria-expanded="true"] { border-color: var(--accent); color: var(--text); }
+.strip-reason {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: repeating-linear-gradient(135deg, transparent 0 6px, var(--grid) 6px 7px);
-  opacity: 0.6;
+  top: calc(100% + 2px);
+  left: 8px;
+  z-index: 6;
+  max-width: calc(100% - 16px);
+  margin: 0;
+  padding: 4px 8px;
+  background: var(--panel);
+  border: 1px solid var(--grid);
+  border-radius: 3px;
+  box-shadow: var(--shadow-pop);
+  color: var(--text);
+  font-size: 11px;
+  line-height: 15px;
 }

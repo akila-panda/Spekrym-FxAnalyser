@@ -67,7 +67,7 @@ interface ScanState {
 }
 
 const idle = (): PanelScan => ({ status: "idle", stale: false });
-const freshPanels = (): Record<Timeframe, PanelScan> => ({ M1: idle(), M5: idle(), M15: idle(), H1: idle(), H4: idle() });
+const freshPanels = (): Record<Timeframe, PanelScan> => ({ M1: idle(), M5: idle(), M15: idle(), H1: idle(), H4: idle(), D: idle(), W: idle() });
 
 const unsupportedReason = (def: StrategyDef): string =>
   `Not supported by ${def.name}. Scan ${def.supported_timeframes.join(", ")} instead.`;

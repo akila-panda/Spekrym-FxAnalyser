@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useScanStore } from "@/scan/scanStore";
 import { rowKey, rowsFor, tabCounts, TABS, type Tab } from "@/scan/selectors";
+import "@/styles/review.css";
+import { MARK_GLYPH, MARK_TEXT } from "@/review/reviewStore";
+import { useReviewLookup } from "@/review/useReviewLookup";
 import { OutcomeBadge } from "./OutcomeBadge";
+import { ReviewFilterChips } from "./ReviewControls";
 import { SetupFilters } from "./SetupFilters";
 
 const DIR = { long: "▲ long", short: "▼ short" } as const;
@@ -14,8 +18,9 @@ export function SetupList() {
   const setTab = useScanStore((s) => s.setTab);
   const activate = useScanStore((s) => s.activate);
 
-  const rows = useMemo(() => rowsFor(panels, tab, filters), [panels, tab, filters]);
-  const counts = useMemo(() => tabCounts(panels, filters), [panels, filters]);
+  const review = useReviewLookup();
+  const rows = useMemo(() => rowsFor(panels, tab, filters, review), [panels, tab, filters, review]);
+  const counts = useMemo(() => tabCounts(panels, filters, review), [panels, filters, review]);
   const anyScan = TABS.some((t) => t !== "all" && panels[t].result);
   const activeKey = active ? rowKey(active.tf, active.id) : null;
 
@@ -45,6 +50,7 @@ export function SetupList() {
         ))}
       </div>
       <SetupFilters />
+      <ReviewFilterChips />
       <div id="setup-rows" role="tabpanel" aria-labelledby={`setup-tab-${tab}`}>
         {empty ? (
           <p>{empty}</p>
@@ -52,6 +58,7 @@ export function SetupList() {
           <ul className="setup-rows" aria-label="Setups">
             {rows.map((r) => {
               const isActive = r.key === activeKey;
+              const mark = review(r.tf, r.setup.id);
               return (
                 <li key={r.key}>
                   <button
@@ -61,6 +68,11 @@ export function SetupList() {
                   >
                     <span className="mono">{r.setup.date}</span>
                     <span>{r.setup.direction ? DIR[r.setup.direction] : "—"}</span>
+                    {mark ? (
+                      <span className="review-glyph" data-mark={mark} role="img" aria-label={`Review: ${MARK_TEXT[mark]}`} title="Human review, not strategy result">{MARK_GLYPH[mark]}</span>
+                    ) : (
+                      <span className="review-glyph" aria-hidden="true" />
+                    )}
                     {tab === "all" && <span className="chip mono">{r.tf}</span>}
                     <OutcomeBadge status={r.setup.status} outcome={r.setup.outcome} />
                   </button>

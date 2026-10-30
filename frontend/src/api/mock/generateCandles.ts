@@ -1,7 +1,7 @@
-/** DEV ONLY. Seeded M1 random walk; M5..H4 are aggregated from M1 so all
+/** DEV ONLY. Seeded M1 random walk; M5..W are aggregated from M1 so all
  *  five timeframes agree exactly. */
 import { gaussian, mulberry32 } from "@/lib/rng";
-import { PAIRS, PAIR_META, TF_SECONDS, TIMEFRAMES, type Candle, type Pair, type Timeframe } from "@/types/market";
+import { PAIRS, PAIR_META, TF_ANCHOR, TF_SECONDS, TIMEFRAMES, type Candle, type Pair, type Timeframe } from "@/types/market";
 
 export type Dataset = Record<Timeframe, Candle[]>;
 
@@ -73,11 +73,11 @@ export function generateM1(pair: Pair, seed = 1): Candle[] {
   return out;
 }
 
-export function aggregate(m1: readonly Candle[], tfSec: number): Candle[] {
+export function aggregate(m1: readonly Candle[], tfSec: number, anchor = 0): Candle[] {
   const out: Candle[] = [];
   let cur: Candle | undefined;
   for (const c of m1) {
-    const bucket = Math.floor(c.time / tfSec) * tfSec;
+    const bucket = Math.floor((c.time - anchor) / tfSec) * tfSec + anchor;
     if (cur && cur.time === bucket) {
       cur.high = Math.max(cur.high, c.high);
       cur.low = Math.min(cur.low, c.low);
@@ -94,7 +94,7 @@ export function aggregate(m1: readonly Candle[], tfSec: number): Candle[] {
 export function generateDataset(pair: Pair, seed = 1): Dataset {
   const m1 = generateM1(pair, seed);
   const ds = {} as Dataset;
-  for (const tf of TIMEFRAMES) ds[tf] = tf === "M1" ? m1 : aggregate(m1, TF_SECONDS[tf]);
+  for (const tf of TIMEFRAMES) ds[tf] = tf === "M1" ? m1 : aggregate(m1, TF_SECONDS[tf], TF_ANCHOR[tf]);
   return ds;
 }
 

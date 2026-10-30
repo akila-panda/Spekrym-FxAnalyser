@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { DataSource } from "@/api/dataSource";
 import { ChartPanel } from "@/components/panel/ChartPanel";
+import { useScanStore } from "@/scan/scanStore";
+import { OverviewStrip, useOverviewTicks } from "@/stack/OverviewStrip";
+import { StackLayout } from "@/stack/StackLayout";
+import { FocusStrip } from "@/stack/FocusStrip";
+import { useStackRows } from "@/stack/useStackRows";
 import { PANEL_ORDER } from "@/types/market";
-import { computeRects, type Size } from "./layouts";
+import { computeRects, STACK_OVERVIEW_PX, stackPlan, type Size } from "./layouts";
 import { PANELS } from "./panelConfig";
 import { selectMaximized, usePanelStore } from "./panelStore";
 
@@ -54,14 +59,27 @@ export function PanelGrid({ source, size: fixedSize }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const rects = computeRects(layout, size, focused);
+  const rowsView = useStackRows();
+  const activeTf = useScanStore((s) => s.active?.tf ?? null);
+  const stack = layout === "stack";
+  const ovTicks = useOverviewTicks();
+  const overview = stack && ovTicks.length > 0;
+  const rowsInput = { focusTF: activeTf ?? focused, supported: rowsView.supported, hidden: rowsView.hidden, overview };
+  const rects = computeRects(layout, size, focused, stack ? rowsInput : undefined);
+  const plan = stack ? stackPlan(size, focused, rowsInput) : [];
   const ready = size.width > 0 && size.height > 0;
 
   return (
     <div ref={ref} className="panel-grid" data-layout={layout}>
+      {overview && <OverviewStrip ticks={ovTicks} />}
+      {layout === "stack" && <StackLayout top={overview ? STACK_OVERVIEW_PX : 0} />}
+      {layout === "stack" && <FocusStrip />}
       {ready &&
         PANELS.map(({ tf }) => {
           const r = rects[tf];
+          // stack: hidden rows (and W) mount nothing
+          if (stack && !r) return null;
+          const planned = stack ? plan.find((p) => p.tf === tf) : undefined;
           return (
             <div
               key={tf}
@@ -72,6 +90,7 @@ export function PanelGrid({ source, size: fixedSize }: Props) {
               <ChartPanel
                 tf={tf}
                 source={source}
+                row={planned ? { cls: planned.cls, demoted: planned.demoted } : undefined}
                 focused={focused === tf}
                 maximized={maximized === tf}
                 onFocus={() => focus(tf)}

@@ -1,6 +1,8 @@
 import { usePanelStore } from "@/panels/panelStore";
 import { useScanStore } from "@/scan/scanStore";
 import { fileBase, toCsv, toJson } from "@/export/exportScan";
+import { reviewKey, useReviewStore } from "@/review/reviewStore";
+import { useViewStore } from "@/store/viewStore";
 import type { ScanResult } from "@/types";
 
 function download(name: string, mime: string, text: string): void {
@@ -29,7 +31,12 @@ export function ExportButton() {
         type="button"
         disabled={disabled}
         title={disabled ? "Scan first to export" : "Download setups as CSV"}
-        onClick={() => result && download(`${fileBase(result)}.csv`, "text/csv;charset=utf-8", toCsv(result))}
+        onClick={() => {
+          if (!result) return;
+          const pair = useViewStore.getState().pair;
+          const entries = useReviewStore.getState().entries;
+          download(`${fileBase(result)}.csv`, "text/csv;charset=utf-8", toCsv(result, (id) => entries[reviewKey(pair, result, id)]));
+        }}
       >
         CSV
       </button>

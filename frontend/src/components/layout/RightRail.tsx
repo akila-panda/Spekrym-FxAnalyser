@@ -1,7 +1,9 @@
 import { ExportButton } from "@/components/setups/ExportButton";
-import { ScanAnalytics } from "@/components/setups/ScanAnalytics";
-import { SetupDetail } from "@/components/setups/SetupDetail";
-import { SetupList } from "@/components/setups/SetupList";
+import { SetupsPane } from "@/components/setups/SetupsPane";
+import { Icon } from "@/components/ui/Icon";
+import { DockedPlaceholder } from "@/window/DockedPlaceholder";
+import { useDockStore } from "@/window/dockStore";
+import { PopoutButton } from "@/window/PopoutButton";
 
 interface Props {
   collapsed: boolean;
@@ -9,26 +11,31 @@ interface Props {
 }
 
 export function RightRail({ collapsed, onToggle }: Props) {
+  const poppedOut = useDockStore((s) => s.popped.has("setups"));
   return (
     <aside className="region rail rail-right" data-collapsed={collapsed} aria-label="Setups and detail">
       <div className="rail-head">
         <button
           type="button"
+          className="icon-btn"
           onClick={onToggle}
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Expand right rail" : "Collapse right rail"}
         >
-          {collapsed ? "«" : "»"}
+          <Icon name={collapsed ? "chevrons-left" : "chevrons-right"} />
         </button>
         {!collapsed && <span>Setups</span>}
         {!collapsed && <span className="spacer" />}
+        {!collapsed && <PopoutButton role={{ kind: "setups" }} label="setups" />}
         {!collapsed && <ExportButton />}
       </div>
       {!collapsed && (
-        <div className="rail-body">
-          <SetupList />
-          <ScanAnalytics />
-          <SetupDetail />
+        <div className="rail-body rail-body--split">
+          {poppedOut ? (
+            <DockedPlaceholder what="Setups" roleKey="setups" />
+          ) : (
+            <SetupsPane />
+          )}
         </div>
       )}
     </aside>

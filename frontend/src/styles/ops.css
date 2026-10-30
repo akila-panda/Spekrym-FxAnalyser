@@ -1,0 +1,17 @@
+/* F18 — Ops & Data Observatory. Tokens only; prefix ops-. State = glyph + text; severity = border shape. */
+.ops-root { display: flex; flex-direction: column; height: 100%; min-height: 0; padding: 8px; gap: 8px; background: var(--bg); color: var(--text); }
+.ops-head { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; font-size: 12px; }
+.ops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; flex: 1; min-height: 0; overflow: auto; align-content: start; }
+.ops-col { padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; overflow: auto; }
+.ops-wide { grid-column: 1 / -1; }
+.ops-col h3 { margin: 0 0 6px; font-size: 13px; }
+.ops-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ops-item { display: flex; flex-direction: column; gap: 2px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 3px; }
+.ops-item[data-state="degraded"], .ops-item[data-state="mismatch"], .ops-item[data-state="stalled"], .ops-item[data-band="near"] { border-style: dashed; }
+.ops-item[data-state="queued"] { border-style: dotted; }
+.ops-item[data-state="stale"], .ops-item[data-state="disconnected"], .ops-item[data-state="error"], .ops-item[data-band="breach"], .ops-alert { border: 2px solid var(--warn); color: var(--warn); }
+.ops-toggle { min-height: 32px; padding: 4px 8px; cursor: pointer; font-size: 12px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.ops-toggle[aria-pressed="true"] { border-color: var(--accent); }
+.ops-muted { color: var(--muted); }
+.ops-root meter { width: 100%; }
+.ops-warn { color: var(--warn); }

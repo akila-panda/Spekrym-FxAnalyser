@@ -1,0 +1,16 @@
+/* DX12: review marks. Shape and text carry meaning; no colour-only signal. */
+.review { display: grid; gap: 4px; padding: 6px 0; border-bottom: 1px solid var(--grid); }
+.review-marks { display: flex; flex-wrap: wrap; gap: 4px; }
+.review-btn { padding: 0 6px; font-size: 12px; color: var(--muted); }
+.review-btn[aria-pressed="true"] { color: var(--text); border-color: var(--accent); background: var(--accent-weak); }
+.review-glyph-inline { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
+.review-note { width: 100%; min-width: 0; font-size: 12px; }
+.review-label { margin: 0; font-size: 11px; }
+.review-chips { display: flex; flex-wrap: wrap; gap: 2px; margin: 0 0 4px; }
+.review-chip { padding: 0 6px; font-size: 11px; color: var(--muted); border-color: transparent; border-bottom: 2px solid transparent; border-radius: 0; }
+.review-chip[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.review-glyph {
+  display: inline-block; min-width: 14px; text-align: center; font-size: 11px; line-height: 14px;
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; color: var(--text);
+}
+.review-glyph[data-mark] { border: 1px solid var(--faint); border-radius: 2px; }

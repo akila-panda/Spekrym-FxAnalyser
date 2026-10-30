@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 import { analyze } from "@/analytics/scanAnalytics";
 import { usePanelStore } from "@/panels/panelStore";
 import { useScanStore } from "@/scan/scanStore";
@@ -8,8 +9,8 @@ import "@/styles/analytics.css";
 const r1 = (x: number | null): string => (x === null ? "—" : x.toFixed(2));
 const pct = (x: number | null): string => (x === null ? "—" : `${Math.round(x * 100)}%`);
 
-/** Compact analytics for the active (or focused) scan: expectancy, distribution, equity curve. */
-export function ScanAnalytics() {
+/** Compact analytics for the active (or focused) scan: expectancy, distribution, equity curve. `bare` drops the own toggle (DX3: the rail section is the toggle). */
+export function ScanAnalytics({ bare = false }: { bare?: boolean } = {}) {
   const active = useScanStore((s) => s.active);
   const focused = usePanelStore((s) => s.focused);
   const result: ScanResult | undefined = useScanStore(
@@ -18,7 +19,7 @@ export function ScanAnalytics() {
   const [open, setOpen] = useState(true);
   const a = useMemo(() => (result ? analyze(result) : null), [result]);
 
-  if (!a || a.n === 0) return null;
+  if (!a || a.n === 0) return bare ? <p className="hint">No scored setups yet.</p> : null;
 
   const maxBar = Math.max(1, ...a.histogram.map((b) => b.count));
   const lo = Math.min(0, ...a.equity);
@@ -30,10 +31,12 @@ export function ScanAnalytics() {
 
   return (
     <section className="analytics" aria-label="Scan analytics">
-      <button type="button" className="analytics-head" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
-        {open ? "▾" : "▸"} Analytics
-      </button>
-      {open && (
+      {!bare && (
+        <button type="button" className="analytics-head" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+          <Icon name={open ? "caret-down" : "caret-right"} size={12} /> Analytics
+        </button>
+      )}
+      {(bare || open) && (
         <div className="analytics-body">
           <dl className="analytics-stats">
             <div><dt>Setups</dt><dd>{a.n}</dd></div>

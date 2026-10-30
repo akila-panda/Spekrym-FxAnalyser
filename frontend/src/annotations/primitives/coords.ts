@@ -51,7 +51,14 @@ export function makeCoordinates(
   return {
     timeX(time) {
       const l = timeToLogical(time, getBars(), barSeconds);
-      return l === null ? null : timeScale.logicalToCoordinate(l as Logical);
+      if (l === null) return null;
+      // lightweight-charts 5.2.1 returns 0 for fractional logical indexes.
+      // Interpolate integer coordinates so intrabar events keep their actual time.
+      const left = Math.floor(l);
+      const xa = timeScale.logicalToCoordinate(left as Logical);
+      if (xa === null || l === left) return xa;
+      const xb = timeScale.logicalToCoordinate((left + 1) as Logical);
+      return xb === null ? null : xa + (xb - xa) * (l - left);
     },
     priceY: (price) => series.priceToCoordinate(price),
   };

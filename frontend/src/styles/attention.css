@@ -1,0 +1,12 @@
+/* F20 — Attention & compression. Tokens only; prefix va-. Pin/mute = glyph + text + border style (never colour alone). */
+.va-root h5 { margin: 6px 0 3px; font-size: 11px; color: var(--muted); }
+.va-lines, .va-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.va-line, .va-item { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 3px; font-size: 12px; }
+.va-line[data-tier="P0"], .va-item[data-tier="P0"] { border: 2px solid var(--warn); }
+.va-item[data-pinned="true"] { border: 2px solid var(--accent); }
+.va-item[data-muted="true"] { border-style: dashed; color: var(--muted); }
+.va-text { flex: 1; }
+.va-btn { min-height: 28px; min-width: 32px; padding: 2px 8px; cursor: pointer; font-size: 12px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 3px; }
+.va-btn[aria-pressed="true"] { border: 2px solid var(--accent); }
+.va-btn:disabled { cursor: default; color: var(--muted); }
+.va-actions { margin-top: 6px; }
